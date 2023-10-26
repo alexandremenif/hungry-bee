@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "meal-planner-401311": {
+      "hosting": {
+        "meal-planner": [
+          "meal-planner-401311"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "meal-planner-401311"
+  }
+}
