@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Auth, User, user } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'meal-planner';
+
+  user$: Observable<User | null> = user(this.auth);
+
+  constructor(readonly auth: Auth, readonly router: Router) { }
+
+  async signOut() {
+    await this.auth.signOut();
+    await this.router.navigate(['sign-in']);
+  }
 }
