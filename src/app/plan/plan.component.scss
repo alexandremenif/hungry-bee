@@ -1,0 +1,21 @@
+:host {
+  position: relative;
+}
+
+.planned-meal {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  mat-card-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+}
+
+.add-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}

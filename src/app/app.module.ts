@@ -13,28 +13,44 @@ import { MatButtonModule } from '@angular/material/button';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { PlanComponent } from './plan/plan.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { RatingComponent } from './shared/rating/rating.component';
+import { MatIconModule } from '@angular/material/icon';
+import { PriceComponent } from './shared/price/price.component';
+import { MealSelectionDialogComponent } from './plan/meal-selection-dialog/meal-selection-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
     AppComponent,
     SignInComponent,
-    PlanComponent
+    PlanComponent,
+    RatingComponent,
+    PriceComponent,
+    MealSelectionDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatToolbarModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
-    MatButtonModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
-    })
+    }),
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatInputModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSelectModule
   ],
   providers: [
   ],

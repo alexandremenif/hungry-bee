@@ -1,0 +1,8 @@
+<mat-form-field *ngIf="meals$ | async as meals">
+    <mat-label>Select a meal</mat-label>
+    <mat-select [(value)]="selection" >
+        <mat-option *ngFor="let meal of meals" [value]="meal">{{meal.name}}</mat-option>
+    </mat-select>
+</mat-form-field>
+
+<button mat-raised-button color="primary" (click)="add()">Add</button>
