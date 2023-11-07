@@ -1,10 +1,11 @@
 <ng-container *ngIf="plan$ | async as plan">
+
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input type="name" matInput [value]="plan.name" (input)="setPlanName($event)">
   </mat-form-field>
 
-  <mat-card *ngFor="let meal of plan.meals" class="planned-meal">
+  <mat-card *ngFor="let meal of plan.meals; let index = index" class="planned-meal">
     <mat-card-header>
       <mat-card-title>{{meal.name}}</mat-card-title>
       <mat-card-subtitle>{{meal.description}}</mat-card-subtitle>
@@ -14,11 +15,14 @@
       <app-price [value]="meal.price"></app-price>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-button color="primary" (click)="removeMeal(meal.key)">
+      <button mat-button color="primary" (click)="removeMeal(index)">
         Remove
       </button>
     </mat-card-actions>
   </mat-card>
+
+  <button mat-raised-button color="primary" (click)="createShoppingList()">Create Shopping List</button>
+
 </ng-container>
 
 <button mat-fab class="add-button" (click)="openMealSelectionDialog()" color="primary" aria-label="Add a Meal">

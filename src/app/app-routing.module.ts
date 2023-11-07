@@ -3,6 +3,7 @@ import { AuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/
 import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { PlanComponent } from './plan/plan.component';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
       {
         path: 'plan',
         component: PlanComponent,
+      },
+      {
+        path: 'shopping-list',
+        component: ShoppingListComponent,
       }
     ],
     canActivate: [AuthGuard],
