@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Price } from '../shared.model';
+
+import { Index } from './index';
 
 @Component({
   selector: 'app-price',
@@ -9,5 +10,5 @@ import { Price } from '../shared.model';
 export class PriceComponent {
 
   @Input()
-  value: Price = 'AVERAGE';
+  value: Index = 'AVERAGE';
 }

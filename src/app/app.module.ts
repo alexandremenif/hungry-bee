@@ -21,6 +21,8 @@ import { PriceComponent } from './shared/price/price.component';
 import { MealSelectionDialogComponent } from './plan/meal-selection-dialog/meal-selection-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
+import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { MatSelectModule } from '@angular/material/select';
     PlanComponent,
     RatingComponent,
     PriceComponent,
-    MealSelectionDialogComponent
+    MealSelectionDialogComponent,
+    ShoppingListComponent
   ],
   imports: [
     BrowserModule,

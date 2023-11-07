@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { Rating } from '../shared.model';
+
+import { Rating } from './index';
 
 @Component({
   selector: 'app-rating',
