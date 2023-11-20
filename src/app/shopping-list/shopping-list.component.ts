@@ -1,27 +1,67 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ShoppingListService } from './shopping-list.service';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { ShoppingList } from './shopping-list.model';
+import { categories, Category } from '../shared/category';
+import { MatDialog } from '@angular/material/dialog';
+import { ShoppingListItemEditionDialogComponent } from './shopping-list-item-edition-dialog/shopping-list-item-edition-dialog.component';
+import { ShoppingListItem } from '../shared/shared.model';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.scss']
 })
-export class ShoppingListComponent implements OnInit, OnDestroy {
+export class ShoppingListComponent {
 
-  shoppingListJSON: string = 'No Shopping List';
+  readonly categories: (Category & { key: string })[] = Object.entries(categories)
+    .map(([key, value]) => ({ key, ...value }))
+    .sort((a, b) => a.order - b.order);
 
-  subscription?: Subscription;
+  shoppingList$: Observable<ShoppingList> = this.shoppingListService.shoppingList$;
 
-  constructor(readonly shoppingListService: ShoppingListService) { }
+  constructor(readonly dialog: MatDialog, readonly shoppingListService: ShoppingListService) { }
 
-  ngOnInit(): void {
-    this.subscription = this.shoppingListService.shoppingList$.subscribe(shoppingList => {
-      this.shoppingListJSON = shoppingList ? JSON.stringify(shoppingList, null, 2) : 'No Shopping List';
+  deleteItem(categoryKey: string, itemKey: string): Promise<void> {
+    return this.shoppingListService.deleteItem(categoryKey, itemKey);
+  }
+
+  editItem(categoryKey: string, itemKey: string, item: ShoppingListItem) {
+    const dialogRef = this.dialog.open(
+      ShoppingListItemEditionDialogComponent,
+      {
+        data: { text: item.text, categoryKey }
+      }
+    );
+    dialogRef.afterClosed().subscribe(async data => {
+      if (data !== undefined) {
+
+        if (data.categoryKey !== categoryKey) {
+          await this.shoppingListService.deleteItem(categoryKey, itemKey);
+          return this.shoppingListService.addItem(data.categoryKey, { text: data.text, checked: item.checked });
+        } else {
+          return this.shoppingListService.setText(categoryKey, itemKey, data.text);
+        }
+      }
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+  addItem() {
+    const dialogRef = this.dialog.open(
+      ShoppingListItemEditionDialogComponent,
+      {
+        data: {}
+      }
+    );
+    dialogRef.afterClosed().subscribe(async data => {
+      if (data !== undefined) {
+
+        this.shoppingListService.addItem(data.categoryKey, { text: data.text, checked: false });
+      }
+    });
+  }
+
+  setChecked(categoryKey: string, itemKey: string, checked: boolean): Promise<void> {
+    return this.shoppingListService.setChecked(categoryKey, itemKey, checked);
   }
 }

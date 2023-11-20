@@ -1,0 +1,16 @@
+.list-item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.strikethrough {
+  font-weight: lighter;
+  text-decoration: line-through;
+}
+
+.add-item-button {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
