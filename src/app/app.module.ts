@@ -23,6 +23,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ShoppingListItemEditionDialogComponent } from './shopping-list/shopping-list-item-edition-dialog/shopping-list-item-edition-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,8 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     RatingComponent,
     PriceComponent,
     MealSelectionDialogComponent,
-    ShoppingListComponent
+    ShoppingListComponent,
+    ShoppingListItemEditionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,10 @@ import { ShoppingListComponent } from './shopping-list/shopping-list.component';
     MatInputModule,
     MatIconModule,
     MatToolbarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatListModule,
+    MatCheckboxModule,
+    FormsModule
   ],
   providers: [
   ],

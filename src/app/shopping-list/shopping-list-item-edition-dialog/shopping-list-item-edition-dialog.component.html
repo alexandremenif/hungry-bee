@@ -1,0 +1,18 @@
+<mat-dialog-content class="mat-typography">
+  <form #form="ngForm">
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select name="categoryKey" required [(ngModel)]="data.categoryKey">
+        <mat-option *ngFor="let category of categories" [value]="category.key">{{category.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Text</mat-label>
+      <input matInput name="text" required [(ngModel)]="data.text">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+  <button mat-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

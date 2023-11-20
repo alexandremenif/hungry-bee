@@ -1,8 +1,7 @@
 import { Index } from './price';
 import { Rating } from './rating';
 import { Unit } from './unit';
-
-export type Category = 'MEAT' | 'FISH' | 'VEGETABLE' | 'FRUIT' | 'DAIRY' | 'GROCERY' | 'OTHER';
+import { CategoryKey } from './category';
 
 export type Model = {
   persons: { [key: string]: { name: string } },
@@ -15,12 +14,12 @@ export type Model = {
     yield: number,
     cooks: string[]
   }},
-  ingredients: { [key: string]: { name: string, category: Category } },
+  ingredients: { [key: string]: { name: string, category: CategoryKey } },
   plan: {
     name: string,
     meals: string[]
   },
-  shoppingList: { [category: string]: { text: string; checked: boolean; }[] }
+  shoppingList: { [category: string]: { [key: string]: ShoppingListItem } }
 };
 
-export type ShoppingList = Model['shoppingList'];
+export type ShoppingListItem = { text: string, checked: boolean };

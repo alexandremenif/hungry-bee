@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { Plan } from './plan.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSelectionDialogComponent } from './meal-selection-dialog/meal-selection-dialog.component';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,13 +18,11 @@ export class PlanComponent {
   constructor(
     readonly dialog: MatDialog,
     readonly router: Router,
-    readonly planService: PlanService,
-    readonly shoppingListService: ShoppingListService
+    readonly planService: PlanService
   ) {
   }
 
   async setPlanName(event: Event) {
-    console.log((event.target as HTMLInputElement).value);
     await this.planService.setPlanName((event.target as HTMLInputElement).value);
   }
 
@@ -34,7 +31,7 @@ export class PlanComponent {
   }
 
   async createShoppingList() {
-    await this.shoppingListService.createShoppingList();
+    await this.planService.createShoppingList();
     await this.router.navigateByUrl('/shopping-list');
   }
 

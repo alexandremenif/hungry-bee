@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Model, ShoppingList } from '../shared/shared.model';
-import { Database, get, object, ref, set } from '@angular/fire/database';
-import { format, Unit } from '../shared/unit';
+import { Database, object, push, ref, remove, set } from '@angular/fire/database';
 import { map, Observable } from 'rxjs';
+import { ShoppingList } from './shopping-list.model';
+import { CategoryKey } from '../shared/category';
+import { ShoppingListItem } from '../shared/shared.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,61 +11,24 @@ import { map, Observable } from 'rxjs';
 export class ShoppingListService {
 
   shoppingList$: Observable<ShoppingList> = object(ref(this.database, 'shoppingList')).pipe(
-    map(queryChange => queryChange.snapshot.val() as ShoppingList)
+    map(queryChange => queryChange.snapshot.val())
   );
 
   constructor(readonly database: Database) { }
 
-  /**
-   * Create a shopping list from the current plan.
-   */
-  async createShoppingList(): Promise<void> {
-    const plan = (await get(ref(this.database, 'plan'))).val() as Model['plan'];
-    const meals = (await get(ref(this.database, 'meals'))).val() as Model['meals'];
-    const ingredients = (await get(ref(this.database, 'ingredients'))).val() as Model['ingredients'];
-    const personCount = (await get(ref(this.database, 'persons'))).size;
-    const quantitiesByCategoryAndIngredient: { [unit: string]: { [ingredientId: string]: number } } = {};
-    const shoppingList: ShoppingList = {};
+  deleteItem(categoryKey: string, itemKey: string): Promise<void> {
+    return remove(ref(this.database, 'shoppingList/' + categoryKey + '/' + itemKey));
+  }
 
-    // Aggregate the quantities for each pair of unit and ingredient.
-    for (const mealId of plan.meals) {
-      const meal = meals[mealId];
-      const ratio = meal.yield / personCount;
-      for (const ingredientId in meal.ingredients) {
-        const { quantity, scalable, unit } = meal.ingredients[ingredientId];
-        if (!quantitiesByCategoryAndIngredient[unit]) {
-          quantitiesByCategoryAndIngredient[unit] = {};
-        }
-        if (!quantitiesByCategoryAndIngredient[unit][ingredientId]) {
-          quantitiesByCategoryAndIngredient[unit][ingredientId] = 0;
-        }
-        quantitiesByCategoryAndIngredient[unit][ingredientId] += scalable ? ratio * quantity : quantity;
-      }
-    }
+  setChecked(categoryKey: string, itemKey: string, checked: boolean): Promise<void> {
+    return set(ref(this.database, 'shoppingList/' + categoryKey + '/' + itemKey + '/checked'), checked);
+  }
 
-    // Create the shopping list from the aggregated quantities.
-    for (const unit in quantitiesByCategoryAndIngredient) {
-      for (const ingredientId in quantitiesByCategoryAndIngredient[unit]) {
-        const ingredient = ingredients[ingredientId];
-        const category = ingredient.category;
+  setText(categoryKey: string, itemKey: string, text: string): Promise<void> {
+    return set(ref(this.database, 'shoppingList/' + categoryKey + '/' + itemKey + '/text'), text);
+  }
 
-        if (shoppingList[category] === undefined) {
-          shoppingList[category] = [];
-        }
-
-        const quantity = quantitiesByCategoryAndIngredient[unit][ingredientId];
-        const name = ingredient.name;
-        const text = `${name}: ${format(quantity, unit as Unit)}`;
-        shoppingList[category].push({ text, checked: false });
-      }
-    }
-
-    // Sort the shopping list entries alphabetically.
-    for (const category in shoppingList) {
-      shoppingList[category].sort((a, b) => a.text.localeCompare(b.text));
-    }
-
-    // Save the shopping list into the database.
-    await set(ref(this.database, 'shoppingList'), shoppingList);
+  addItem(categoryKey: CategoryKey, item: ShoppingListItem): Promise<void> {
+    return push(ref(this.database, 'shoppingList/' + categoryKey), item).then();
   }
 }
