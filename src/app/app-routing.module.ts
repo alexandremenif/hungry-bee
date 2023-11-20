@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard'
-import { ActivatedRouteSnapshot, RouterModule, RouterStateSnapshot, Routes } from '@angular/router';
-import { SignInComponent } from './sign-in/sign-in.component';
-import { PlanComponent } from './plan/plan.component';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -16,11 +13,11 @@ const routes: Routes = [
       },
       {
         path: 'plan',
-        component: PlanComponent,
+        loadChildren: () => import('./plan/plan.module').then(m => m.PlanModule),
       },
       {
         path: 'shopping-list',
-        component: ShoppingListComponent,
+        loadChildren: () => import('./shopping-list/shopping-list.module').then(m => m.ShoppingListModule),
       }
     ],
     canActivate: [AuthGuard],
@@ -28,7 +25,7 @@ const routes: Routes = [
   },
   {
     path: 'sign-in',
-    component: SignInComponent,
+    loadChildren: () => import('./sign-in/sign-in.module').then(m => m.SignInModule),
     canActivate: [AuthGuard],
     data: { authGuardPipe: () => redirectLoggedInTo(['/']) }
   }

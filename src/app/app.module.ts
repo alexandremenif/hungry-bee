@@ -9,34 +9,12 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { environment } from '../environments/environment';
-import { MatButtonModule } from '@angular/material/button';
-import { SignInComponent } from './sign-in/sign-in.component';
-import { PlanComponent } from './plan/plan.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
-import { RatingComponent } from './shared/rating/rating.component';
-import { MatIconModule } from '@angular/material/icon';
-import { PriceComponent } from './shared/price/price.component';
-import { MealSelectionDialogComponent } from './plan/meal-selection-dialog/meal-selection-dialog.component';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatSelectModule } from '@angular/material/select';
-import { MatListModule } from '@angular/material/list';
-import { ShoppingListComponent } from './shopping-list/shopping-list.component';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { ShoppingListItemEditionDialogComponent } from './shopping-list/shopping-list-item-edition-dialog/shopping-list-item-edition-dialog.component';
-import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SignInComponent,
-    PlanComponent,
-    RatingComponent,
-    PriceComponent,
-    MealSelectionDialogComponent,
-    ShoppingListComponent,
-    ShoppingListItemEditionDialogComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -52,18 +30,9 @@ import { FormsModule } from '@angular/forms';
       registrationStrategy: 'registerWhenStable:30000'
     }),
     MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatInputModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatSelectModule,
-    MatListModule,
-    MatCheckboxModule,
-    FormsModule
+    MatToolbarModule
   ],
-  providers: [
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
