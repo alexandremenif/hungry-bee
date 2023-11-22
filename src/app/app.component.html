@@ -1,8 +1,28 @@
-<mat-toolbar class="toolbar" color="primary">
-  <span>Meal Planner</span>
-  <button *ngIf="user$ | async" mat-button (click)="signOut()">Sign out</button>
-</mat-toolbar>
-
-<main>
-  <router-outlet></router-outlet>
-</main>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>Meal Planner</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="plan">Plan</a>
+      <a mat-list-item routerLink="shopping-list">Shopping List</a>
+      <mat-divider></mat-divider>
+      <a mat-list-item [routerLink]="" *ngIf="user$ | async" (click)="signOut()">Sign out</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>{{title$ | async}}</span>
+    </mat-toolbar>
+    <main><router-outlet></router-outlet></main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
