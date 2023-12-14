@@ -1,6 +1,6 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Category, categories, CategoryKey } from '../../shared/category';
+import { Category, categories, CategoryKey } from '../../core/models/category.model';
 
 @Component({
   selector: 'app-shopping-list-item-edition-dialog',
@@ -9,15 +9,11 @@ import { Category, categories, CategoryKey } from '../../shared/category';
 })
 export class ShoppingListItemEditionDialogComponent {
 
+  readonly data: { text: string, categoryKey: CategoryKey } = inject(MAT_DIALOG_DATA);
   readonly categories: (Category & { key: string })[] = Object.entries(categories)
     .map(([key, value]) => ({ key, ...value }))
     .sort((a, b) => a.order - b.order);
 
-  text?: string;
-  categoryKey?: CategoryKey;
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, categoryKey: CategoryKey }) {
-    this.text = data.text;
-    this.categoryKey = data.categoryKey;
-  }
+  text: string = this.data.text;
+  categoryKey: CategoryKey = this.data.categoryKey;
 }

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
-import { PlanService } from './plan.service';
-import { Observable } from 'rxjs';
-import { Plan } from './plan.model';
+import { Component, inject } from '@angular/core';
+import { map } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSelectionDialogComponent } from './meal-selection-dialog/meal-selection-dialog.component';
 import { Router } from '@angular/router';
+import { PlanService } from '../core/services/plan.service';
+import { MealService } from '../core/services/meal.service';
+import { PersonService } from '../core/services/person.service';
+import { ShoppingListService } from '../core/services/shopping-list.service';
 
 @Component({
   selector: 'app-plan',
@@ -13,25 +15,27 @@ import { Router } from '@angular/router';
 })
 export class PlanComponent {
 
-  plan$: Observable<Plan> = this.planService.plan$;
+  readonly dialog = inject(MatDialog);
+  readonly router = inject(Router);
+  readonly planService = inject(PlanService);
+  readonly mealService = inject(MealService);
+  readonly personService = inject(PersonService);
+  readonly shoppingListService = inject(ShoppingListService);
 
-  constructor(
-    readonly dialog: MatDialog,
-    readonly router: Router,
-    readonly planService: PlanService
-  ) {
+  plan$ = this.planService.get$();
+  meals$ = this.mealService.getAll$();
+  persons$ = this.personService.getAll$().pipe(map(persons => Object.values(persons)));
+
+  async setPlanName(name: string) {
+    await this.planService.update({ name });
   }
 
-  async setPlanName(event: Event) {
-    await this.planService.setPlanName((event.target as HTMLInputElement).value);
-  }
-
-  async removeMeal(index: number) {
-    await this.planService.removeMeal(index);
+  async removePlannedMeal(key: string) {
+    await this.planService.removePlannedMeal(key);
   }
 
   async createShoppingList() {
-    await this.planService.createShoppingList();
+    await this.shoppingListService.createFromPlan();
     await this.router.navigateByUrl('/shopping-list');
   }
 
@@ -40,9 +44,9 @@ export class PlanComponent {
       MealSelectionDialogComponent,
       { width: '30rem'}
     );
-    dialogRef.afterClosed().subscribe(mealCode => {
-      if (mealCode) {
-        this.planService.addMeal(mealCode);
+    dialogRef.afterClosed().subscribe(mealKey => {
+      if (mealKey) {
+        this.planService.addPlannedMeal(mealKey).then();
       }
     });
   }

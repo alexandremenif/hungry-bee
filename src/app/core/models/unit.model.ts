@@ -1,17 +1,12 @@
-export type Unit = 'GRAM' | 'LITER' | 'PIECE' | 'TEASPOON' | 'TABLESPOON';
+export type Unit = { name: string, formatter: (quantity: number) => string };
 
-export function format(quantity: number, unit: Unit): string {
-  switch (unit) {
-    case 'GRAM':
-      return formatGram(quantity);
-    case 'LITER':
-      return formatLiter(quantity);
-    case 'PIECE':
-      return formatPiece(quantity);
-    default:
-      return `${quantity.toFixed(3)} ${unit.toLowerCase()}`;
-  }
-}
+export const units = {
+  GRAM: { name: 'Gram', formatter: formatGram },
+  LITER: { name: 'Liter', formatter: formatLiter },
+  PIECE: { name: 'Piece', formatter: formatPiece }
+};
+
+export type UnitKey = keyof typeof units;
 
 function formatLiter(quantity: number): string {
   if (quantity >= 1) {
@@ -32,5 +27,6 @@ function formatGram(quantity: number): string {
 }
 
 function formatPiece(quantity: number): string {
-  return Math.ceil(quantity).toString();
+  const value = Math.ceil(quantity);
+  return value === 1 ? '1pc' : `${value}pcs`;
 }

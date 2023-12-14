@@ -7,6 +7,7 @@
     <mat-nav-list>
       <a mat-list-item routerLink="plan">Plan</a>
       <a mat-list-item routerLink="shopping-list">Shopping List</a>
+      <a mat-list-item routerLink="meals">Meals</a>
       <mat-divider></mat-divider>
       <a mat-list-item [routerLink]="" *ngIf="user$ | async" (click)="signOut()">Sign out</a>
     </mat-nav-list>

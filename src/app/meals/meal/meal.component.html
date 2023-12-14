@@ -1,0 +1,75 @@
+<ng-container *ngIf="meal$ | async as meal">
+
+  <mat-card>
+    <mat-card-content class="properties">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input
+          #name
+          matInput
+          [value]="meal.value.name"
+          (input)="setName(meal.key, name.value)"
+        >
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <textarea
+          #description
+          matInput
+          rows="5"
+          [value]="meal.value.description"
+          (input)="setDescription(meal.key, description.value)"
+        ></textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Servings</mat-label>
+        <mat-select
+          #servings
+          [value]="meal.value.servings"
+          (change)="setServings(meal.key, servings.value)"
+        >
+          <mat-option *ngFor="let servingsValue of servingsValues" [value]="servingsValue">{{servingsValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Ingredients</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <ng-container *ngFor="let mealIngredient of meal.value.ingredients | keyvalue; let last = last">
+          <mat-list-item>
+            <div class="ingredient-line">
+              <div>
+                <span matListItemTitle>{{ (ingredients$ | async)?.[mealIngredient.value.key]?.name }}</span>
+                <span matListItemLine>{{ mealIngredient.value | ingredientQuantity }}</span>
+              </div>
+              <button mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>more_vert</mat-icon></button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="removeIngredient(meal.key, mealIngredient.key)">Delete</button>
+                <button mat-menu-item (click)="openIngredientDialog(meal.key, mealIngredient)">Edit</button>
+              </mat-menu>
+            </div>
+          </mat-list-item>
+          <mat-divider *ngIf="!last"></mat-divider>
+        </ng-container>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        mat-button
+        color="primary"
+        [disabled]="(((ingredients$ | async) ?? {}) | keyvalue).length === 0"
+        (click)="openIngredientDialog(meal.key)"
+      >
+        Add
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+</ng-container>

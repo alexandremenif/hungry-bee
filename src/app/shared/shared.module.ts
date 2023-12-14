@@ -1,19 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RatingComponent } from './rating/rating.component';
-import { PriceComponent } from './price/price.component';
+import { RatingComponent } from './components/rating/rating.component';
+import { PriceComponent } from './components/price/price.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AverageMealRatingPipe } from './pipes/average-ratings.pipe';
 
 
 
 @NgModule({
   declarations: [
     PriceComponent,
-    RatingComponent
+    RatingComponent,
+    AverageMealRatingPipe
   ],
   exports: [
     RatingComponent,
-    PriceComponent
+    PriceComponent,
+    AverageMealRatingPipe
   ],
   imports: [
     CommonModule,

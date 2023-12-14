@@ -1,0 +1,32 @@
+<mat-dialog-content class="mat-typography">
+  <form #form=ngForm>
+    <mat-form-field>
+      <mat-label>Ingredient</mat-label>
+      <mat-select name="key" [(ngModel)]="model.key" [required]="true">
+        <mat-option *ngFor="let ingredient of (ingredients$ | async) ?? {} | keyvalue" [value]="ingredient.key">
+          {{ ingredient.value.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Quantity</mat-label>
+      <input type="number" name="quantity" min="0" matInput size="10" [required]="true" [(ngModel)]="model.quantity">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Unit</mat-label>
+      <mat-select name="unit" [(ngModel)]="model.unit" [required]="true">
+        <mat-option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{unit.value.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-slide-toggle name="scaleServings" [(ngModel)]="model.scaleServings" [required]="true">
+      Scale servings
+    </mat-slide-toggle>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+  <button mat-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="model">Ok</button>
+</mat-dialog-actions>
