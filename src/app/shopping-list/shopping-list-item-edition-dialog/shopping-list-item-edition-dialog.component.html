@@ -2,7 +2,7 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Category</mat-label>
-      <mat-select name="categoryKey" required [(ngModel)]="data.categoryKey">
+      <mat-select name="categoryKey" [required]="true" [(ngModel)]="data.categoryKey">
         <mat-option *ngFor="let category of categories" [value]="category.key">{{category.name}}</mat-option>
       </mat-select>
     </mat-form-field>

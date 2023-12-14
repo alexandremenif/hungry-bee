@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
@@ -9,9 +9,9 @@ import { Router } from '@angular/router';
 })
 export class SignInComponent {
 
+  readonly auth = inject(Auth);
+  readonly router = inject(Router);
   readonly provider = new GoogleAuthProvider();
-
-  constructor(readonly auth: Auth, readonly router: Router) {}
 
   async signIn() {
     await signInWithPopup(this.auth, this.provider);

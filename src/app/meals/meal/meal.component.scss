@@ -1,0 +1,19 @@
+mat-card {
+  margin-bottom: 1rem;
+}
+
+.properties {
+  display: flex;
+  flex-direction: column;
+
+  mat-form-field {
+    align-self: start;
+  }
+}
+
+.ingredient-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}

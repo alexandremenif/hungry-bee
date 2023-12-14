@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-import { PlanService } from '../plan.service';
+import { Component, inject } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MealSelectionDialogService } from './meal-selection-dialog.service';
-import { Meal } from './meal-selection-dialog.model';
+import { MealService } from '../../core/services/meal.service';
+import { Meal } from '../../core/models/meal.model';
 
 @Component({
   selector: 'app-meal-selection-dialog',
@@ -11,17 +10,13 @@ import { Meal } from './meal-selection-dialog.model';
 })
 export class MealSelectionDialogComponent {
 
-  meals$ = this.mealSelectionDialogService.meals$;
+  readonly dialogRef = inject(MatDialogRef);
+  readonly mealService = inject(MealService);
 
-  selection?: Meal;
-
-  constructor(
-    readonly dialogRef: MatDialogRef<MealSelectionDialogComponent>,
-    readonly mealSelectionDialogService: MealSelectionDialogService
-  ) {
-  }
+  meals$ = this.mealService.getAll$();
+  selection?: { key: string, value: Meal };
 
   add() {
-    this.dialogRef.close(this.selection?.code);
+    this.dialogRef.close(this.selection?.key);
   }
 }

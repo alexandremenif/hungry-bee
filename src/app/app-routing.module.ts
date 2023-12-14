@@ -20,6 +20,11 @@ const routes: Routes = [
         path: 'shopping-list',
         title: 'Shopping List',
         loadChildren: () => import('./shopping-list/shopping-list.module').then(m => m.ShoppingListModule),
+      },
+      {
+        path: 'meals',
+        title: 'Meals',
+        loadChildren: () => import('./meals/meals.module').then(m => m.MealsModule),
       }
     ],
     canActivate: [AuthGuard],
