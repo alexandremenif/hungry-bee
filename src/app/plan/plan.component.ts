@@ -11,10 +11,9 @@ import { ShoppingListService } from '../core/services/shopping-list.service';
 @Component({
   selector: 'app-plan',
   templateUrl: './plan.component.html',
-  styleUrls: ['./plan.component.scss']
+  styleUrls: ['./plan.component.scss'],
 })
 export class PlanComponent {
-
   readonly dialog = inject(MatDialog);
   readonly router = inject(Router);
   readonly planService = inject(PlanService);
@@ -24,7 +23,7 @@ export class PlanComponent {
 
   plan$ = this.planService.get$();
   meals$ = this.mealService.getAll$();
-  persons$ = this.personService.getAll$().pipe(map(persons => Object.values(persons)));
+  persons$ = this.personService.getAll$().pipe(map((persons) => Object.values(persons)));
 
   async setPlanName(name: string) {
     await this.planService.update({ name });
@@ -40,11 +39,10 @@ export class PlanComponent {
   }
 
   openMealSelectionDialog() {
-    const dialogRef = this.dialog.open(
-      MealSelectionDialogComponent,
-      { width: '30rem'}
-    );
-    dialogRef.afterClosed().subscribe(mealKey => {
+    const dialogRef = this.dialog.open(MealSelectionDialogComponent, {
+      width: '30rem',
+    });
+    dialogRef.afterClosed().subscribe((mealKey) => {
       if (mealKey) {
         this.planService.addPlannedMeal(mealKey).then();
       }

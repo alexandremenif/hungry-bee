@@ -12,10 +12,9 @@ import { KeyValue } from '@angular/common';
 @Component({
   selector: 'app-meal',
   templateUrl: './meal.component.html',
-  styleUrls: ['./meal.component.scss']
+  styleUrls: ['./meal.component.scss'],
 })
 export class MealComponent {
-
   readonly route = inject(ActivatedRoute);
   readonly dialog = inject(MatDialog);
   readonly mealService = inject(MealService);
@@ -24,15 +23,14 @@ export class MealComponent {
   readonly servingsValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   readonly meal$ = this.route.paramMap.pipe(
-    map(paramMap => paramMap.get('key')),
-    switchMap(key => {
-
+    map((paramMap) => paramMap.get('key')),
+    switchMap((key) => {
       if (key === null) {
         return throwError(() => new Error('No key provided'));
       } else {
-        return this.mealService.get$(key).pipe(map(value => ({ key, value })))
+        return this.mealService.get$(key).pipe(map((value) => ({ key, value })));
       }
-    })
+    }),
   );
 
   readonly ingredients$ = this.ingredientService.getAll$();
@@ -51,16 +49,11 @@ export class MealComponent {
 
   openIngredientDialog(mealKey: string, ingredient?: KeyValue<string, MealIngredient>) {
     this.dialog
-      .open<
-        IngredientDialogComponent,
-        MealIngredient | undefined,
-        MealIngredient
-      >(
-        IngredientDialogComponent,
-        { data: ingredient?.value }
-      )
+      .open<IngredientDialogComponent, MealIngredient | undefined, MealIngredient>(IngredientDialogComponent, {
+        data: ingredient?.value,
+      })
       .afterClosed()
-      .subscribe(result => {
+      .subscribe((result) => {
         if (result) {
           if (ingredient) {
             this.mealService.updateIngredient(mealKey, ingredient.key, result);
@@ -68,7 +61,7 @@ export class MealComponent {
             this.mealService.addIngredient(mealKey, result);
           }
         }
-      })
+      });
   }
 
   removeIngredient(mealKey: string, ingredientKey: string) {

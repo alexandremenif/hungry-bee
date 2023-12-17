@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Meal, MealIngredient } from '../models/meal.model';
 import { Repository } from './repository';
-import { get, push, ref, remove, set, update } from '@angular/fire/database';
+import { get, push, ref, remove, update } from '@angular/fire/database';
 import { Plan } from '../models/plan.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MealService extends Repository<Meal> {
-
   constructor() {
     super('meals');
   }
@@ -17,13 +16,10 @@ export class MealService extends Repository<Meal> {
     // Delete the meal as well as all references to it in the plan in one transaction.
     const meals = (await get(ref(this.database, 'plan/meals'))).val() as Plan['meals'];
     const keys = Object.entries(meals)
-      .filter(([_, key]) => mealKey === key)
-      .map(([key, _]) => key);
-    const paths = [...keys.map(key => `plan/meals/${key}`), `meals/${mealKey}`];
-    return await update(
-      ref(this.database),
-      Object.fromEntries(paths.map(path => [path, null]))
-    );
+      .filter((entry) => mealKey === entry[1])
+      .map((entry) => entry[0]);
+    const paths = [...keys.map((key) => `plan/meals/${key}`), `meals/${mealKey}`];
+    return await update(ref(this.database), Object.fromEntries(paths.map((path) => [path, null])));
   }
 
   async addIngredient(mealKey: string, ingredient: MealIngredient): Promise<void> {

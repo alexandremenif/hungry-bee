@@ -7,10 +7,9 @@ import { MealIngredient } from '../../../core/models/meal.model';
 @Component({
   selector: 'app-ingredient-dialog',
   templateUrl: './ingredient-dialog.component.html',
-  styleUrls: ['./ingredient-dialog.component.scss']
+  styleUrls: ['./ingredient-dialog.component.scss'],
 })
 export class IngredientDialogComponent {
-
   readonly data?: MealIngredient = inject(MAT_DIALOG_DATA);
   readonly ingredientService = inject(IngredientService);
 
@@ -21,6 +20,6 @@ export class IngredientDialogComponent {
     key: this.data?.key,
     quantity: this.data?.quantity ?? 1,
     unit: this.data?.unit ?? 'PIECE',
-    scaleServings: this.data?.scaleServings ?? true
-  }
+    scaleServings: this.data?.scaleServings ?? true,
+  };
 }

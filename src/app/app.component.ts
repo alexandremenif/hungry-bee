@@ -9,22 +9,19 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-
   readonly auth = inject(Auth);
   readonly router = inject(Router);
   readonly breakpointObserver = inject(BreakpointObserver);
-
   readonly title = inject(Title);
   readonly title$ = this.router.events.pipe(map(() => this.title.getTitle()));
 
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches),
-      shareReplay()
-    );
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
+    map((result) => result.matches),
+    shareReplay(),
+  );
 
   user$: Observable<User | null> = user(this.auth);
 

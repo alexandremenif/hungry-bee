@@ -1,8 +1,8 @@
 <mat-form-field *ngIf="meals$ | async as meals">
-    <mat-label>Select a meal</mat-label>
-    <mat-select [(value)]="selection" >
-        <mat-option *ngFor="let meal of meals | keyvalue" [value]="meal">{{meal.value.name}}</mat-option>
-    </mat-select>
+  <mat-label>Select a meal</mat-label>
+  <mat-select [(value)]="selection">
+    <mat-option *ngFor="let meal of meals | keyvalue" [value]="meal">{{ meal.value.name }}</mat-option>
+  </mat-select>
 </mat-form-field>
 
 <button mat-raised-button color="primary" (click)="add()">Add</button>

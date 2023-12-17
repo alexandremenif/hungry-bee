@@ -5,22 +5,9 @@ import { PriceComponent } from './components/price/price.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AverageMealRatingPipe } from './pipes/average-ratings.pipe';
 
-
-
 @NgModule({
-  declarations: [
-    PriceComponent,
-    RatingComponent,
-    AverageMealRatingPipe
-  ],
-  exports: [
-    RatingComponent,
-    PriceComponent,
-    AverageMealRatingPipe
-  ],
-  imports: [
-    CommonModule,
-    MatIconModule
-  ]
+  declarations: [PriceComponent, RatingComponent, AverageMealRatingPipe],
+  exports: [RatingComponent, PriceComponent, AverageMealRatingPipe],
+  imports: [CommonModule, MatIconModule],
 })
-export class SharedModule { }
+export class SharedModule {}

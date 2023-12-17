@@ -10,10 +10,9 @@ import { IngredientService } from './ingredient.service';
 import { PersonService } from './person.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ShoppingListService {
-
   readonly rootPath = 'shoppingList';
   readonly database = inject(Database);
   readonly planService = inject(PlanService);
@@ -22,9 +21,7 @@ export class ShoppingListService {
   readonly personService = inject(PersonService);
 
   get$(): Observable<ShoppingList> {
-    return object(ref(this.database, this.rootPath)).pipe(
-      map(queryChange => queryChange.snapshot.val())
-    );
+    return object(ref(this.database, this.rootPath)).pipe(map((queryChange) => queryChange.snapshot.val()));
   }
 
   async removeItem(categoryKey: string, itemKey: string): Promise<void> {
@@ -44,7 +41,9 @@ export class ShoppingListService {
     const meals = await this.mealService.getAll();
     const ingredients = await this.ingredientService.getAll();
     const personCount = await this.personService.size();
-    const quantitiesByUnitAndIngredient: { [unit: string]: { [ingredientId: string]: number } } = {};
+    const quantitiesByUnitAndIngredient: {
+      [unit: string]: { [ingredientId: string]: number };
+    } = {};
     const shoppingList: ShoppingList = {};
 
     // Aggregate the quantities for each pair of unit and ingredient.

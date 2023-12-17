@@ -8,7 +8,7 @@ describe('IngredientDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [IngredientDialogComponent]
+      declarations: [IngredientDialogComponent],
     });
     fixture = TestBed.createComponent(IngredientDialogComponent);
     component = fixture.componentInstance;

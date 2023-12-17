@@ -9,10 +9,9 @@ import { ShoppingListService } from '../core/services/shopping-list.service';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss']
+  styleUrls: ['./shopping-list.component.scss'],
 })
 export class ShoppingListComponent {
-
   readonly dialog = inject(MatDialog);
   readonly shoppingListService = inject(ShoppingListService);
 
@@ -27,41 +26,43 @@ export class ShoppingListComponent {
   }
 
   editItem(categoryKey: string, itemKey: string, item: ShoppingListItem) {
-    const dialogRef = this.dialog.open(
-      ShoppingListItemEditionDialogComponent,
-      {
-        data: { text: item.text, categoryKey }
-      }
-    );
-    dialogRef.afterClosed().subscribe(async data => {
+    const dialogRef = this.dialog.open(ShoppingListItemEditionDialogComponent, {
+      data: { text: item.text, categoryKey },
+    });
+    dialogRef.afterClosed().subscribe(async (data) => {
       if (data !== undefined) {
-
         if (data.categoryKey !== categoryKey) {
           await this.shoppingListService.removeItem(categoryKey, itemKey);
-          return this.shoppingListService.addItem(data.categoryKey, { text: data.text, checked: item.checked });
+          return this.shoppingListService.addItem(data.categoryKey, {
+            text: data.text,
+            checked: item.checked,
+          });
         } else {
-          return this.shoppingListService.updateItem(categoryKey, itemKey, { text: data.text });
+          return this.shoppingListService.updateItem(categoryKey, itemKey, {
+            text: data.text,
+          });
         }
       }
     });
   }
 
   addItem() {
-    const dialogRef = this.dialog.open(
-      ShoppingListItemEditionDialogComponent,
-      {
-        data: {}
-      }
-    );
-    dialogRef.afterClosed().subscribe(async data => {
+    const dialogRef = this.dialog.open(ShoppingListItemEditionDialogComponent, {
+      data: {},
+    });
+    dialogRef.afterClosed().subscribe(async (data) => {
       if (data !== undefined) {
-
-        this.shoppingListService.addItem(data.categoryKey, { text: data.text, checked: false });
+        this.shoppingListService.addItem(data.categoryKey, {
+          text: data.text,
+          checked: false,
+        });
       }
     });
   }
 
   setChecked(categoryKey: string, itemKey: string, checked: boolean): Promise<void> {
-    return this.shoppingListService.updateItem(categoryKey, itemKey, { checked });
+    return this.shoppingListService.updateItem(categoryKey, itemKey, {
+      checked,
+    });
   }
 }

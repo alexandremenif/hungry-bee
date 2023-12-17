@@ -1,5 +1,5 @@
 <mat-dialog-content class="mat-typography">
-  <form #form=ngForm>
+  <form #form="ngForm">
     <mat-form-field>
       <mat-label>Ingredient</mat-label>
       <mat-select name="key" [(ngModel)]="model.key" [required]="true">
@@ -11,13 +11,13 @@
 
     <mat-form-field>
       <mat-label>Quantity</mat-label>
-      <input type="number" name="quantity" min="0" matInput size="10" [required]="true" [(ngModel)]="model.quantity">
+      <input type="number" name="quantity" min="0" matInput size="10" [required]="true" [(ngModel)]="model.quantity" />
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Unit</mat-label>
       <mat-select name="unit" [(ngModel)]="model.unit" [required]="true">
-        <mat-option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{unit.value.name}}</mat-option>
+        <mat-option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{ unit.value.name }}</mat-option>
       </mat-select>
     </mat-form-field>
 

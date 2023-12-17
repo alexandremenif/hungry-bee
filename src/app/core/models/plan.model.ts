@@ -1,6 +1,6 @@
 export type Plan = {
-  name: string,
-  meals: Record<string, PlannedMeal>
+  name: string;
+  meals: Record<string, PlannedMeal>;
 };
 
-export type PlannedMeal = string
+export type PlannedMeal = string;

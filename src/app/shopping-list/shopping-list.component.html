@@ -1,9 +1,7 @@
-<mat-list *ngIf="(shoppingList$ | async) as shoppingList">
+<mat-list *ngIf="shoppingList$ | async as shoppingList">
   <ng-container *ngFor="let category of categories">
-
     <ng-container *ngIf="shoppingList[category.key]">
-
-      <h3 mat-subheader>{{category.name}}</h3>
+      <h3 mat-subheader>{{ category.name }}</h3>
 
       <mat-list-item *ngFor="let entry of shoppingList[category.key] | keyvalue">
         <div class="list-item-content">
@@ -12,21 +10,31 @@
             [class.checked-item]="entry.value.checked"
             (change)="setChecked(category.key, entry.key, $event.checked)"
           >
-            <div [class.strikethrough]="entry.value.checked">{{entry.value.text}}</div>
+            <div [class.strikethrough]="entry.value.checked">
+              {{ entry.value.text }}
+            </div>
           </mat-checkbox>
           <div>
-            <button mat-icon-button color="primary" aria-label="Edit item" (click)="editItem(category.key, entry.key, entry.value)">
+            <button
+              mat-icon-button
+              color="primary"
+              aria-label="Edit item"
+              (click)="editItem(category.key, entry.key, entry.value)"
+            >
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="primary" aria-label="Delete item" (click)="deleteItem(category.key, entry.key)">
+            <button
+              mat-icon-button
+              color="primary"
+              aria-label="Delete item"
+              (click)="deleteItem(category.key, entry.key)"
+            >
               <mat-icon>delete</mat-icon>
             </button>
           </div>
         </div>
       </mat-list-item>
-
     </ng-container>
-
   </ng-container>
 </mat-list>
 

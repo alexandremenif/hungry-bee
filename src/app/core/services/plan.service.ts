@@ -1,20 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { firstValueFrom, map, Observable } from 'rxjs';
-import { Database, get, object, push, ref, remove, set, update } from '@angular/fire/database';
+import { Database, object, push, ref, remove, update } from '@angular/fire/database';
 import { Plan } from '../models/plan.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlanService {
-
   readonly rootPath = 'plan';
   readonly database = inject(Database);
 
   get$(): Observable<Plan> {
-    return object(ref(this.database, this.rootPath)).pipe(
-      map(queryChange => queryChange.snapshot.val())
-    );
+    return object(ref(this.database, this.rootPath)).pipe(map((queryChange) => queryChange.snapshot.val()));
   }
 
   get(): Promise<Plan> {

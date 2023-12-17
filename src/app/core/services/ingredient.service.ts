@@ -3,10 +3,9 @@ import { Ingredient } from '../models/ingredient.model';
 import { Repository } from './repository';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IngredientService extends Repository<Ingredient> {
-
   constructor() {
     super('ingredients');
   }

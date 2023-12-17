@@ -18,16 +18,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { IngredientDialogComponent } from './meal/ingredient-dialog/ingredient-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
 
 @NgModule({
-  declarations: [
-    MealsComponent,
-    MealComponent,
-    IngredientQuantityPipe,
-    IngredientDialogComponent
-  ],
+  declarations: [MealsComponent, MealComponent, IngredientQuantityPipe, IngredientDialogComponent],
   imports: [
     CommonModule,
     MealsRoutingModule,
@@ -42,7 +35,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatSelectModule,
     MatListModule,
     MatMenuModule,
-    MatSlideToggleModule
-  ]
+    MatSlideToggleModule,
+  ],
 })
-export class MealsModule { }
+export class MealsModule {}

@@ -3,22 +3,16 @@ import { Database, get, object, push, ref, remove, update } from '@angular/fire/
 import { firstValueFrom, map, Observable } from 'rxjs';
 
 export class Repository<T> {
-
   readonly database = inject(Database);
 
-  constructor(readonly rootPath: string) {
-  }
+  constructor(readonly rootPath: string) {}
 
   getAll$(): Observable<Record<string, T>> {
-    return object(ref(this.database, this.rootPath)).pipe(
-      map(queryChange => queryChange.snapshot.val())
-    );
+    return object(ref(this.database, this.rootPath)).pipe(map((queryChange) => queryChange.snapshot.val()));
   }
 
   get$(key: string): Observable<T> {
-    return object(ref(this.database, this.path(key))).pipe(
-      map(queryChange => queryChange.snapshot.val())
-    );
+    return object(ref(this.database, this.path(key))).pipe(map((queryChange) => queryChange.snapshot.val()));
   }
 
   getAll(): Promise<Record<string, T>> {
