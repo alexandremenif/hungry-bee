@@ -1,5 +1,13 @@
 <mat-icon>star</mat-icon>
-<mat-icon *ngIf="value > 1">star</mat-icon>
-<mat-icon *ngIf="value > 2">star</mat-icon>
-<mat-icon *ngIf="value > 3">star</mat-icon>
-<mat-icon *ngIf="value > 4">star</mat-icon>
+@if (value > 1) {
+  <mat-icon>star</mat-icon>
+}
+@if (value > 2) {
+  <mat-icon>star</mat-icon>
+}
+@if (value > 3) {
+  <mat-icon>star</mat-icon>
+}
+@if (value > 4) {
+  <mat-icon>star</mat-icon>
+}

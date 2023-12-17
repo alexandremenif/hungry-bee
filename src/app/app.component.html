@@ -13,20 +13,18 @@
       <a mat-list-item routerLink="shopping-list">Shopping List</a>
       <a mat-list-item routerLink="meals">Meals</a>
       <mat-divider></mat-divider>
-      <a mat-list-item [routerLink]="" *ngIf="user$ | async" (click)="signOut()">Sign out</a>
+      @if (user$ | async) {
+        <a mat-list-item [routerLink]="" (click)="signOut()">Sign out</a>
+      }
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async"
-      >
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-      </button>
+      @if (isHandset$ | async) {
+        <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+      }
       <span>{{ title$ | async }}</span>
     </mat-toolbar>
     <main><router-outlet></router-outlet></main>

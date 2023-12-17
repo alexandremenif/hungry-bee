@@ -1,30 +1,29 @@
-<ng-container *ngIf="plan$ | async as plan">
+@if (plan$ | async; as plan) {
   <mat-form-field>
     <mat-label>Name</mat-label>
     <input #name type="text" matInput [value]="plan.name" (input)="setPlanName(name.value)" />
   </mat-form-field>
-
-  <mat-card *ngFor="let plannedMeal of plan.meals | keyvalue" class="planned-meal">
-    <ng-container *ngIf="meals$ | async as meals">
-      <mat-card-header>
-        <mat-card-title>{{ meals[plannedMeal.value].name }}</mat-card-title>
-        <mat-card-subtitle>{{ meals[plannedMeal.value].description }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-rating
-          *ngIf="persons$ | async as persons"
-          [value]="meals[plannedMeal.value] | averageMealRating: persons"
-        ></app-rating>
-        <app-price [value]="meals[plannedMeal.value].price"></app-price>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button color="primary" (click)="removePlannedMeal(plannedMeal.key)">Remove</button>
-      </mat-card-actions>
-    </ng-container>
-  </mat-card>
-
+  @for (plannedMeal of plan.meals | keyvalue; track plannedMeal) {
+    <mat-card class="planned-meal">
+      @if (meals$ | async; as meals) {
+        <mat-card-header>
+          <mat-card-title>{{ meals[plannedMeal.value].name }}</mat-card-title>
+          <mat-card-subtitle>{{ meals[plannedMeal.value].description }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (persons$ | async; as persons) {
+            <app-rating [value]="meals[plannedMeal.value] | averageMealRating: persons"></app-rating>
+          }
+          <app-price [value]="meals[plannedMeal.value].price"></app-price>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="removePlannedMeal(plannedMeal.key)">Remove</button>
+        </mat-card-actions>
+      }
+    </mat-card>
+  }
   <button mat-raised-button color="primary" (click)="createShoppingList()">Create Shopping List</button>
-</ng-container>
+}
 
 <button mat-fab class="add-button" (click)="openMealSelectionDialog()" color="primary" aria-label="Add a Meal">
   <mat-icon>add</mat-icon>

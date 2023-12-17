@@ -1,3 +1,7 @@
 <mat-icon>euro</mat-icon>
-<mat-icon *ngIf="value === 'AVERAGE' || value === 'EXPENSIVE'">euro</mat-icon>
-<mat-icon *ngIf="value === 'EXPENSIVE'">euro</mat-icon>
+@if (value === "AVERAGE" || value === "EXPENSIVE") {
+  <mat-icon>euro</mat-icon>
+}
+@if (value === "EXPENSIVE") {
+  <mat-icon>euro</mat-icon>
+}

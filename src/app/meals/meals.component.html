@@ -4,18 +4,20 @@
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 
-<ng-container *ngIf="filteredMeals$ | async as meals">
-  <mat-card class="meal" *ngFor="let meal of meals | keyvalue">
-    <mat-card-header>
-      <mat-card-title>{{ meal.value.name }}</mat-card-title>
-      <mat-card-subtitle>{{ meal.value.description }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button mat-button color="primary" (click)="deleteMeal(meal.key)">Delete</button>
-      <button mat-button color="primary" (click)="navigateToMeal(meal.key)">Edit</button>
-    </mat-card-actions>
-  </mat-card>
-</ng-container>
+@if (filteredMeals$ | async; as meals) {
+  @for (meal of meals | keyvalue; track meal) {
+    <mat-card class="meal">
+      <mat-card-header>
+        <mat-card-title>{{ meal.value.name }}</mat-card-title>
+        <mat-card-subtitle>{{ meal.value.description }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="deleteMeal(meal.key)">Delete</button>
+        <button mat-button color="primary" (click)="navigateToMeal(meal.key)">Edit</button>
+      </mat-card-actions>
+    </mat-card>
+  }
+}
 
 <!-- Floating Action Button -->
 <button mat-fab class="add-meal-button" color="primary" (click)="addMeal()">

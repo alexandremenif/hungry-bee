@@ -1,42 +1,45 @@
-<mat-list *ngIf="shoppingList$ | async as shoppingList">
-  <ng-container *ngFor="let category of categories">
-    <ng-container *ngIf="shoppingList[category.key]">
-      <h3 mat-subheader>{{ category.name }}</h3>
-
-      <mat-list-item *ngFor="let entry of shoppingList[category.key] | keyvalue">
-        <div class="list-item-content">
-          <mat-checkbox
-            [checked]="entry.value.checked"
-            [class.checked-item]="entry.value.checked"
-            (change)="setChecked(category.key, entry.key, $event.checked)"
-          >
-            <div [class.strikethrough]="entry.value.checked">
-              {{ entry.value.text }}
+@if (shoppingList$ | async; as shoppingList) {
+  <mat-list>
+    @for (category of categories; track category) {
+      @if (shoppingList[category.key]) {
+        <h3 mat-subheader>{{ category.name }}</h3>
+        @for (entry of shoppingList[category.key] | keyvalue; track entry) {
+          <mat-list-item>
+            <div class="list-item-content">
+              <mat-checkbox
+                [checked]="entry.value.checked"
+                [class.checked-item]="entry.value.checked"
+                (change)="setChecked(category.key, entry.key, $event.checked)"
+              >
+                <div [class.strikethrough]="entry.value.checked">
+                  {{ entry.value.text }}
+                </div>
+              </mat-checkbox>
+              <div>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  aria-label="Edit item"
+                  (click)="editItem(category.key, entry.key, entry.value)"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  aria-label="Delete item"
+                  (click)="deleteItem(category.key, entry.key)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
             </div>
-          </mat-checkbox>
-          <div>
-            <button
-              mat-icon-button
-              color="primary"
-              aria-label="Edit item"
-              (click)="editItem(category.key, entry.key, entry.value)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              color="primary"
-              aria-label="Delete item"
-              (click)="deleteItem(category.key, entry.key)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-      </mat-list-item>
-    </ng-container>
-  </ng-container>
-</mat-list>
+          </mat-list-item>
+        }
+      }
+    }
+  </mat-list>
+}
 
 <button mat-fab class="add-item-button" (click)="addItem()" color="primary" aria-label="Add an item">
   <mat-icon>add</mat-icon>

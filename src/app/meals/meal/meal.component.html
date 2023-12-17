@@ -1,11 +1,10 @@
-<ng-container *ngIf="meal$ | async as meal">
+@if (meal$ | async; as meal) {
   <mat-card>
     <mat-card-content class="properties">
       <mat-form-field>
         <mat-label>Name</mat-label>
         <input #name matInput [value]="meal.value.name" (input)="setName(meal.key, name.value)" />
       </mat-form-field>
-
       <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea
@@ -16,25 +15,23 @@
           (input)="setDescription(meal.key, description.value)"
         ></textarea>
       </mat-form-field>
-
       <mat-form-field>
         <mat-label>Servings</mat-label>
         <mat-select #servings [value]="meal.value.servings" (change)="setServings(meal.key, servings.value)">
-          <mat-option *ngFor="let servingsValue of servingsValues" [value]="servingsValue">{{
-            servingsValue
-          }}</mat-option>
+          @for (servingsValue of servingsValues; track servingsValue) {
+            <mat-option [value]="servingsValue">{{ servingsValue }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
     </mat-card-content>
   </mat-card>
-
   <mat-card>
     <mat-card-header>
       <mat-card-title>Ingredients</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <mat-list>
-        <ng-container *ngFor="let mealIngredient of meal.value.ingredients | keyvalue; let last = last">
+        @for (mealIngredient of meal.value.ingredients | keyvalue; track mealIngredient; let last = $last) {
           <mat-list-item>
             <div class="ingredient-line">
               <div>
@@ -50,8 +47,10 @@
               </mat-menu>
             </div>
           </mat-list-item>
-          <mat-divider *ngIf="!last"></mat-divider>
-        </ng-container>
+          @if (!last) {
+            <mat-divider></mat-divider>
+          }
+        }
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
@@ -65,4 +64,4 @@
       </button>
     </mat-card-actions>
   </mat-card>
-</ng-container>
+}

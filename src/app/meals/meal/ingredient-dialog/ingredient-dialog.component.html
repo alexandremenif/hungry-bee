@@ -3,9 +3,11 @@
     <mat-form-field>
       <mat-label>Ingredient</mat-label>
       <mat-select name="key" [(ngModel)]="model.key" [required]="true">
-        <mat-option *ngFor="let ingredient of (ingredients$ | async) ?? {} | keyvalue" [value]="ingredient.key">
-          {{ ingredient.value.name }}
-        </mat-option>
+        @for (ingredient of (ingredients$ | async) ?? {} | keyvalue; track ingredient) {
+          <mat-option [value]="ingredient.key">
+            {{ ingredient.value.name }}
+          </mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
@@ -17,7 +19,9 @@
     <mat-form-field>
       <mat-label>Unit</mat-label>
       <mat-select name="unit" [(ngModel)]="model.unit" [required]="true">
-        <mat-option *ngFor="let unit of units | keyvalue" [value]="unit.key">{{ unit.value.name }}</mat-option>
+        @for (unit of units | keyvalue; track unit) {
+          <mat-option [value]="unit.key">{{ unit.value.name }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
 
