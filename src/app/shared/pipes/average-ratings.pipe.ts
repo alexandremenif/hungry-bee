@@ -4,7 +4,7 @@ import { averageRatings, Rating } from '../../core/models/rating.model';
 import { Person } from '../../core/models/person.model';
 
 @Pipe({
-  name: 'averageMealRating',
+  name: 'averageMealRating'
 })
 export class AverageMealRatingPipe implements PipeTransform {
   readonly defaultRating: Rating = 3;

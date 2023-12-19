@@ -35,7 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSelectModule,
     MatListModule,
     MatMenuModule,
-    MatSlideToggleModule,
-  ],
+    MatSlideToggleModule
+  ]
 })
 export class MealsModule {}

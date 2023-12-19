@@ -4,7 +4,7 @@ import { Database, object, push, ref, remove, update } from '@angular/fire/datab
 import { Plan } from '../models/plan.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PlanService {
   readonly rootPath = 'plan';

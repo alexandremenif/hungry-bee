@@ -11,7 +11,7 @@ import { ShoppingListService } from '../core/services/shopping-list.service';
 @Component({
   selector: 'app-plan',
   templateUrl: './plan.component.html',
-  styleUrls: ['./plan.component.scss'],
+  styleUrls: ['./plan.component.scss']
 })
 export class PlanComponent {
   readonly dialog = inject(MatDialog);
@@ -40,7 +40,7 @@ export class PlanComponent {
 
   openMealSelectionDialog() {
     const dialogRef = this.dialog.open(MealSelectionDialogComponent, {
-      width: '30rem',
+      width: '30rem'
     });
     dialogRef.afterClosed().subscribe((mealKey) => {
       if (mealKey) {

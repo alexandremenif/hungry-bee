@@ -5,7 +5,7 @@ import { Category, categories, CategoryKey } from '../../core/models/category.mo
 @Component({
   selector: 'app-shopping-list-item-edition-dialog',
   templateUrl: './shopping-list-item-edition-dialog.component.html',
-  styleUrls: ['./shopping-list-item-edition-dialog.component.scss'],
+  styleUrls: ['./shopping-list-item-edition-dialog.component.scss']
 })
 export class ShoppingListItemEditionDialogComponent {
   readonly data: { text: string; categoryKey: CategoryKey } = inject(MAT_DIALOG_DATA);

@@ -24,8 +24,8 @@ $meal-planner-theme: mat.define-light-theme(
     color: (
       primary: $meal-planner-primary,
       accent: $meal-planner-accent,
-      warn: $meal-planner-warn,
-    ),
+      warn: $meal-planner-warn
+    )
   )
 );
 

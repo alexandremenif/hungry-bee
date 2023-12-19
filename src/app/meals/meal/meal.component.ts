@@ -12,7 +12,7 @@ import { KeyValue } from '@angular/common';
 @Component({
   selector: 'app-meal',
   templateUrl: './meal.component.html',
-  styleUrls: ['./meal.component.scss'],
+  styleUrls: ['./meal.component.scss']
 })
 export class MealComponent {
   readonly route = inject(ActivatedRoute);
@@ -30,7 +30,7 @@ export class MealComponent {
       } else {
         return this.mealService.get$(key).pipe(map((value) => ({ key, value })));
       }
-    }),
+    })
   );
 
   readonly ingredients$ = this.ingredientService.getAll$();
@@ -50,7 +50,7 @@ export class MealComponent {
   openIngredientDialog(mealKey: string, ingredient?: KeyValue<string, MealIngredient>) {
     this.dialog
       .open<IngredientDialogComponent, MealIngredient | undefined, MealIngredient>(IngredientDialogComponent, {
-        data: ingredient?.value,
+        data: ingredient?.value
       })
       .afterClosed()
       .subscribe((result) => {

@@ -6,7 +6,7 @@ import { Meal } from '../../core/models/meal.model';
 @Component({
   selector: 'app-meal-selection-dialog',
   templateUrl: './meal-selection-dialog.component.html',
-  styleUrls: ['./meal-selection-dialog.component.scss'],
+  styleUrls: ['./meal-selection-dialog.component.scss']
 })
 export class MealSelectionDialogComponent {
   readonly dialogRef = inject(MatDialogRef);

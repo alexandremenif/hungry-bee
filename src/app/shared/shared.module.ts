@@ -8,6 +8,6 @@ import { AverageMealRatingPipe } from './pipes/average-ratings.pipe';
 @NgModule({
   declarations: [PriceComponent, RatingComponent, AverageMealRatingPipe],
   exports: [RatingComponent, PriceComponent, AverageMealRatingPipe],
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule]
 })
 export class SharedModule {}

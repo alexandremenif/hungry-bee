@@ -7,7 +7,7 @@ export const categories = {
   VEGETABLE: { name: 'Vegetable', order: 3 },
   DAIRY: { name: 'Dairy', order: 4 },
   GROCERY: { name: 'Grocery', order: 5 },
-  OTHER: { name: 'Other', order: 6 },
+  OTHER: { name: 'Other', order: 6 }
 };
 
 export type CategoryKey = keyof typeof categories;

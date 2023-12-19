@@ -22,7 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatIconModule,
     MatSelectModule,
-    SharedModule,
-  ],
+    SharedModule
+  ]
 })
 export class PlanModule {}

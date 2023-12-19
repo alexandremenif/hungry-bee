@@ -3,7 +3,7 @@ export type Unit = { name: string; formatter: (quantity: number) => string };
 export const units = {
   GRAM: { name: 'Gram', formatter: formatGram },
   LITER: { name: 'Liter', formatter: formatLiter },
-  PIECE: { name: 'Piece', formatter: formatPiece },
+  PIECE: { name: 'Piece', formatter: formatPiece }
 };
 
 export type UnitKey = keyof typeof units;

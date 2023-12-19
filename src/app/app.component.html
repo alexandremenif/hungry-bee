@@ -12,6 +12,7 @@
       <a mat-list-item routerLink="plan">Plan</a>
       <a mat-list-item routerLink="shopping-list">Shopping List</a>
       <a mat-list-item routerLink="meals">Meals</a>
+      <a mat-list-item routerLink="ingredients">Ingredients</a>
       <mat-divider></mat-divider>
       @if (user$ | async) {
         <a mat-list-item [routerLink]="" (click)="signOut()">Sign out</a>

@@ -9,7 +9,7 @@ import { ShoppingListService } from '../core/services/shopping-list.service';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.scss'],
+  styleUrls: ['./shopping-list.component.scss']
 })
 export class ShoppingListComponent {
   readonly dialog = inject(MatDialog);
@@ -27,7 +27,7 @@ export class ShoppingListComponent {
 
   editItem(categoryKey: string, itemKey: string, item: ShoppingListItem) {
     const dialogRef = this.dialog.open(ShoppingListItemEditionDialogComponent, {
-      data: { text: item.text, categoryKey },
+      data: { text: item.text, categoryKey }
     });
     dialogRef.afterClosed().subscribe(async (data) => {
       if (data !== undefined) {
@@ -35,11 +35,11 @@ export class ShoppingListComponent {
           await this.shoppingListService.removeItem(categoryKey, itemKey);
           return this.shoppingListService.addItem(data.categoryKey, {
             text: data.text,
-            checked: item.checked,
+            checked: item.checked
           });
         } else {
           return this.shoppingListService.updateItem(categoryKey, itemKey, {
-            text: data.text,
+            text: data.text
           });
         }
       }
@@ -48,13 +48,13 @@ export class ShoppingListComponent {
 
   addItem() {
     const dialogRef = this.dialog.open(ShoppingListItemEditionDialogComponent, {
-      data: {},
+      data: {}
     });
     dialogRef.afterClosed().subscribe(async (data) => {
       if (data !== undefined) {
         this.shoppingListService.addItem(data.categoryKey, {
           text: data.text,
-          checked: false,
+          checked: false
         });
       }
     });
@@ -62,7 +62,7 @@ export class ShoppingListComponent {
 
   setChecked(categoryKey: string, itemKey: string, checked: boolean): Promise<void> {
     return this.shoppingListService.updateItem(categoryKey, itemKey, {
-      checked,
+      checked
     });
   }
 }

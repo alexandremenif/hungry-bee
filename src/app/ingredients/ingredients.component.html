@@ -1,0 +1,30 @@
+<mat-card>
+  <mat-card-content>
+    <mat-list>
+      @for (ingredient of (ingredients$ | async) ?? {} | keyvalue; track ingredient.key; let last = $last) {
+        <mat-list-item>
+          <div class="ingredient-line">
+            <div>
+              <span matListItemTitle>{{ ingredient.value.name }}</span>
+              <span matListItemLine>{{ categories[ingredient.value.category].name }}</span>
+            </div>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="deleteIngredient(ingredient.key)">Delete</button>
+              <button mat-menu-item (click)="openIngredientDialog(ingredient)">Edit</button>
+            </mat-menu>
+          </div>
+        </mat-list-item>
+        @if (!last) {
+          <mat-divider></mat-divider>
+        }
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<button mat-fab class="add-button" (click)="openIngredientDialog()" color="primary" aria-label="Add a Meal">
+  <mat-icon>add</mat-icon>
+</button>

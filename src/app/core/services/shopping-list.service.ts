@@ -10,7 +10,7 @@ import { IngredientService } from './ingredient.service';
 import { PersonService } from './person.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ShoppingListService {
   readonly rootPath = 'shoppingList';

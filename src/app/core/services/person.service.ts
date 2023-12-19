@@ -3,7 +3,7 @@ import { Person } from '../models/person.model';
 import { Repository } from './repository';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PersonService extends Repository<Person> {
   constructor() {

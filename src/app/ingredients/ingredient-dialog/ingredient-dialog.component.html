@@ -1,0 +1,21 @@
+<mat-dialog-content class="mat-typography">
+  <form #form="ngForm">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input name="name" matInput type="text" [(ngModel)]="model.name" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <mat-select name="category" [(ngModel)]="model.category">
+        @for (category of categories | keyvalue; track category.key) {
+          <mat-option [value]="category.key">{{ category.value.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+  <button mat-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="model">Ok</button>
+</mat-dialog-actions>

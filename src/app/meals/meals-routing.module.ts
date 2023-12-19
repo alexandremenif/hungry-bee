@@ -6,16 +6,16 @@ import { MealComponent } from './meal/meal.component';
 const routes: Routes = [
   {
     path: '',
-    component: MealsComponent,
+    component: MealsComponent
   },
   {
     path: ':key',
-    component: MealComponent,
-  },
+    component: MealComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class MealsRoutingModule {}

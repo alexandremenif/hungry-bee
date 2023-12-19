@@ -1,0 +1,12 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-card {
+  margin: 1rem;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

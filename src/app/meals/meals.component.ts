@@ -9,7 +9,7 @@ import { Meal } from '../core/models/meal.model';
 @Component({
   selector: 'app-meals',
   templateUrl: './meals.component.html',
-  styleUrls: ['./meals.component.scss'],
+  styleUrls: ['./meals.component.scss']
 })
 export class MealsComponent implements OnInit {
   readonly mealsService = inject(MealService);
@@ -31,9 +31,9 @@ export class MealsComponent implements OnInit {
             meals,
             (meal) =>
               meal.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
-              meal.description.toLowerCase().includes(this.filterText.toLowerCase()),
-          ),
-        ),
+              meal.description.toLowerCase().includes(this.filterText.toLowerCase())
+          )
+        )
       );
   }
 
@@ -45,12 +45,12 @@ export class MealsComponent implements OnInit {
       ratings: {},
       ingredients: {},
       servings: 3,
-      cooks: [],
+      cooks: []
     });
   }
 
   deleteMeal(key: string): void {
-    this.mealsService.remove(key);
+    this.mealsService.delete(key);
   }
 
   navigateToMeal(key: string): void {

@@ -5,14 +5,14 @@ import { get, push, ref, remove, update } from '@angular/fire/database';
 import { Plan } from '../models/plan.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MealService extends Repository<Meal> {
   constructor() {
     super('meals');
   }
 
-  override async remove(mealKey: string): Promise<void> {
+  override async delete(mealKey: string): Promise<void> {
     // Delete the meal as well as all references to it in the plan in one transaction.
     const meals = (await get(ref(this.database, 'plan/meals'))).val() as Plan['meals'];
     const keys = Object.entries(meals)

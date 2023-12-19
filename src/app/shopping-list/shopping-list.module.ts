@@ -25,7 +25,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatInputModule,
     MatSelectModule,
-    ShoppingListRoutingModule,
-  ],
+    ShoppingListRoutingModule
+  ]
 })
 export class ShoppingListModule {}

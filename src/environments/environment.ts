@@ -8,6 +8,6 @@ export const environment = {
     apiKey: 'AIzaSyDI_S85R9jJW9wO32ORBfcKlDmJufCZoe4',
     authDomain: 'meal-planner-401311.firebaseapp.com',
     messagingSenderId: '190346825102',
-    measurementId: 'G-321QYBKH15',
-  },
+    measurementId: 'G-321QYBKH15'
+  }
 };

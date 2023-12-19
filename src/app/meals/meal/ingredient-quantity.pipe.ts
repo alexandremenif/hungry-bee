@@ -4,7 +4,7 @@ import { units } from '../../core/models/unit.model';
 
 @Pipe({
   name: 'ingredientQuantity',
-  pure: true,
+  pure: true
 })
 export class IngredientQuantityPipe implements PipeTransform {
   transform(ingredient: MealIngredient): string {

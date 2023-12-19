@@ -8,7 +8,7 @@ describe('MealSelectionDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MealSelectionDialogComponent],
+      declarations: [MealSelectionDialogComponent]
     });
     fixture = TestBed.createComponent(MealSelectionDialogComponent);
     component = fixture.componentInstance;

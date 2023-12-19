@@ -8,7 +8,7 @@ describe('ItemTextEditionDialogComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ShoppingListItemEditionDialogComponent],
+      declarations: [ShoppingListItemEditionDialogComponent]
     });
     fixture = TestBed.createComponent(ShoppingListItemEditionDialogComponent);
     component = fixture.componentInstance;

@@ -27,12 +27,12 @@ export class Repository<T> {
     return (await get(ref(this.database, this.rootPath))).size;
   }
 
-  async remove(key: string): Promise<void> {
+  async delete(key: string): Promise<void> {
     return remove(ref(this.database, this.path(key)));
   }
 
-  async add(element: T): Promise<void> {
-    return push(ref(this.database, this.rootPath), element).then();
+  async add(element: T): Promise<string | null> {
+    return push(ref(this.database, this.rootPath), element).then(({ key }) => key);
   }
 
   async update(key: string, element: Partial<T>): Promise<void> {
