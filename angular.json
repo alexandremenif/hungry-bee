@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "meal-planner": {
+    "hungry-bee": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/meal-planner",
+            "outputPath": "dist/hungry-bee",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "meal-planner:build:production"
+              "buildTarget": "hungry-bee:build:production"
             },
             "development": {
-              "buildTarget": "meal-planner:build:development"
+              "buildTarget": "hungry-bee:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "meal-planner:build"
+            "buildTarget": "hungry-bee:build"
           }
         },
         "test": {
@@ -89,7 +89,7 @@
           "builder": "@angular/fire:deploy",
           "options": {
             "version": 2,
-            "browserTarget": "meal-planner:build:production"
+            "browserTarget": "hungry-bee:build:production"
           }
         },
         "lint": {

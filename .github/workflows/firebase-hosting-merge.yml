@@ -15,8 +15,8 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEAL_PLANNER_401311 }}"
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUNGRY_BEE_947D6 }}"
           channelId: live
-          projectId: meal-planner-401311
+          projectId: hungry-bee-947d6
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks

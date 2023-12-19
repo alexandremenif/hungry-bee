@@ -1,7 +1,7 @@
 {
-  "name": "Meal Planner",
-  "short_name": "Meal Planner",
-  "theme_color": "#1976d2",
+  "name": "Hungry Bee",
+  "short_name": "Hungry Bee",
+  "theme_color": "#43a047",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",

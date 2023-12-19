@@ -1,14 +1,14 @@
 {
   "targets": {
-    "meal-planner-401311": {
+    "hungry-bee-947d6": {
       "hosting": {
-        "meal-planner": [
-          "meal-planner-401311"
+        "hungry-bee": [
+          "hungry-bee-947d6"
         ]
       }
     }
   },
   "projects": {
-    "default": "meal-planner-401311"
+    "default": "hungry-bee-947d6"
   }
 }
