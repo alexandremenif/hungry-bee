@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: npm ci && npm run build
+      - run: npm ci && npm run lint && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_MEAL_PLANNER_401311 }}"
-          projectId: meal-planner-401311
+          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_HUNGRY_BEE_947D6 }}"
+          projectId: hungry-bee-947d6
         env:
           FIREBASE_CLI_EXPERIMENTS: webframeworks
