@@ -2,7 +2,7 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Ingredient</mat-label>
-      <mat-select name="key" [(ngModel)]="model.key" [required]="true">
+      <mat-select name="key" [(ngModel)]="model.ingredient" [required]="true">
         @for (ingredient of (ingredients$ | async) ?? {} | keyvalue; track ingredient) {
           <mat-option [value]="ingredient.key">
             {{ ingredient.value.name }}

@@ -13,7 +13,7 @@ export type Meal = {
 };
 
 export type MealIngredient = {
-  key: string;
+  ingredient: string;
   quantity: number;
   unit: UnitKey;
   scaleServings: boolean;

@@ -55,10 +55,10 @@ export class ShoppingListService {
         if (!quantitiesByUnitAndIngredient[unit]) {
           quantitiesByUnitAndIngredient[unit] = {};
         }
-        if (!quantitiesByUnitAndIngredient[unit][ingredient.key]) {
-          quantitiesByUnitAndIngredient[unit][ingredient.key] = 0;
+        if (!quantitiesByUnitAndIngredient[unit][ingredient.ingredient]) {
+          quantitiesByUnitAndIngredient[unit][ingredient.ingredient] = 0;
         }
-        quantitiesByUnitAndIngredient[unit][ingredient.key] += scaleServings ? ratio * quantity : quantity;
+        quantitiesByUnitAndIngredient[unit][ingredient.ingredient] += scaleServings ? ratio * quantity : quantity;
       }
     }
 

@@ -17,7 +17,7 @@ export class IngredientDialogComponent {
   readonly units: Record<UnitKey, Unit> = units;
 
   model: Partial<MealIngredient> = {
-    key: this.data?.key,
+    ingredient: this.data?.ingredient,
     quantity: this.data?.quantity ?? 1,
     unit: this.data?.unit ?? 'PIECE',
     scaleServings: this.data?.scaleServings ?? true

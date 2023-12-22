@@ -17,7 +17,7 @@ export class IngredientService extends Repository<Ingredient> {
     const meals = (await get(ref(this.database, 'meals'))).val() as Record<string, Meal>;
     const mealIngredientPaths = Object.entries(meals).flatMap(([mealKey, meal]) =>
       Object.entries(meal.ingredients)
-        .filter((entry) => key === entry[1].key)
+        .filter((entry) => key === entry[1].ingredient)
         .map((entry) => `meals/${mealKey}/ingredients/${entry[0]}`)
     );
     const paths = [...mealIngredientPaths, `ingredients/${key}`];
