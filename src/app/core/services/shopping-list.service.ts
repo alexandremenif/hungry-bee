@@ -1,56 +1,53 @@
 import { inject, Injectable } from '@angular/core';
-import { Database, object, push, ref, remove, set, update } from '@angular/fire/database';
+import { Database, ref, set } from '@angular/fire/database';
 import { ShoppingList, ShoppingListItem } from '../models/shopping-list.model';
 import { units } from '../models/unit.model';
-import { map, Observable } from 'rxjs';
 import { CategoryKey } from '../models/category.model';
 import { PlanService } from './plan.service';
 import { MealService } from './meal.service';
 import { IngredientService } from './ingredient.service';
-import { PersonService } from './person.service';
+import { Node } from '../utilities/node';
+import { Collection } from '../utilities/collection';
+import { shoppingListItemSchema, shoppingListSchema } from '../schemas/shopping-list.schema';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ShoppingListService {
-  readonly rootPath = 'shoppingList';
-  readonly database = inject(Database);
+export class ShoppingListService extends Node<ShoppingList> {
   readonly planService = inject(PlanService);
   readonly mealService = inject(MealService);
   readonly ingredientService = inject(IngredientService);
-  readonly personService = inject(PersonService);
 
-  get$(): Observable<ShoppingList> {
-    return object(ref(this.database, this.rootPath)).pipe(map((queryChange) => queryChange.snapshot.val()));
+  constructor(database: Database) {
+    super(database, 'shoppingList', shoppingListSchema, () => ({}));
   }
 
   async removeItem(categoryKey: string, itemKey: string): Promise<void> {
-    return remove(ref(this.database, this.itemPath(categoryKey, itemKey)));
+    return this.items(categoryKey).remove(itemKey);
   }
 
-  async addItem(categoryKey: CategoryKey, item: ShoppingListItem): Promise<void> {
-    return push(ref(this.database, 'shoppingList/' + categoryKey), item).then();
+  async addItem(categoryKey: CategoryKey, item: ShoppingListItem): Promise<string | null> {
+    return this.items(categoryKey).add(item);
   }
 
   async updateItem(categoryKey: string, itemKey: string, item: Partial<ShoppingListItem>): Promise<void> {
-    return update(ref(this.database, this.itemPath(categoryKey, itemKey)), item);
+    return this.items(categoryKey).update(itemKey, item);
   }
 
   async createFromPlan(): Promise<void> {
     const plan = await this.planService.get();
     const meals = await this.mealService.getAll();
     const ingredients = await this.ingredientService.getAll();
-    const personCount = await this.personService.size();
     const quantitiesByUnitAndIngredient: {
       [unit: string]: { [ingredientId: string]: number };
     } = {};
     const shoppingList: ShoppingList = {};
 
     // Aggregate the quantities for each pair of unit and ingredient.
-    for (const mealId of Object.values(plan.meals)) {
-      const meal = meals[mealId];
-      const ratio = meal.servings / personCount;
-      for (const ingredient of Object.values(meal.ingredients)) {
+    for (const plannedMeal of Object.values(plan.meals ?? {})) {
+      const meal = meals[plannedMeal.meal];
+      const ratio = plannedMeal.servings / meal.servings;
+      for (const ingredient of Object.values(meal.ingredients ?? {})) {
         const { quantity, scaleServings, unit } = ingredient;
         if (!quantitiesByUnitAndIngredient[unit]) {
           quantitiesByUnitAndIngredient[unit] = {};
@@ -75,20 +72,16 @@ export class ShoppingListService {
         const quantity = quantitiesByUnitAndIngredient[unitKey][ingredientKey];
         const name = ingredient.name;
         const text = `${name} ${unit.formatter(quantity)}`;
-        const key = Object.keys(shoppingList[category]).length;
+        const key = `_${Object.keys(shoppingList[category]).length}`;
         shoppingList[category][key] = { text, checked: false };
       }
     }
 
     // Save the shopping list into the database.
-    await set(ref(this.database, this.rootPath), shoppingList);
+    await set(ref(this.database, this.path), shoppingList);
   }
 
-  private categoryPath(categoryKey: string): string {
-    return `${this.rootPath}/${categoryKey}`;
-  }
-
-  private itemPath(categoryKey: string, itemKey: string): string {
-    return `${this.categoryPath(categoryKey)}/${itemKey}`;
+  private items(categoryKey: string): Collection<ShoppingListItem> {
+    return new Collection(this.database, `${this.path}/${categoryKey}`, shoppingListItemSchema);
   }
 }

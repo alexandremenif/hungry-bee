@@ -1,44 +1,41 @@
 import { Injectable } from '@angular/core';
 import { Meal, MealIngredient } from '../models/meal.model';
-import { Repository } from './repository';
-import { get, push, ref, remove, update } from '@angular/fire/database';
+import { Database, get, ref, update } from '@angular/fire/database';
 import { Plan } from '../models/plan.model';
+import { mealIngredientSchema, mealSchema } from '../schemas/meal.schema';
+import { Collection } from '../utilities/collection';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MealService extends Repository<Meal> {
-  constructor() {
-    super('meals');
+export class MealService extends Collection<Meal> {
+  constructor(database: Database) {
+    super(database, 'meals', mealSchema);
   }
 
-  override async delete(mealKey: string): Promise<void> {
+  override async remove(mealKey: string): Promise<void> {
     // Delete the meal as well as all references to it in the plan in one transaction.
     const meals = (await get(ref(this.database, 'plan/meals'))).val() as Plan['meals'];
-    const keys = Object.entries(meals)
-      .filter((entry) => mealKey === entry[1])
+    const keys = Object.entries(meals ?? {})
+      .filter((entry) => mealKey === entry[1].meal)
       .map((entry) => entry[0]);
     const paths = [...keys.map((key) => `plan/meals/${key}`), `meals/${mealKey}`];
     return await update(ref(this.database), Object.fromEntries(paths.map((path) => [path, null])));
   }
 
-  async addIngredient(mealKey: string, ingredient: MealIngredient): Promise<void> {
-    return push(ref(this.database, this.ingredientsRootPath(mealKey)), ingredient).then();
+  async addIngredient(mealKey: string, ingredient: MealIngredient): Promise<string | null> {
+    return this.ingredients(mealKey).add(ingredient);
   }
 
   async removeIngredient(mealKey: string, ingredientKey: string): Promise<void> {
-    return remove(ref(this.database, this.ingredientPath(mealKey, ingredientKey)));
+    return this.ingredients(mealKey).remove(ingredientKey);
   }
 
   async updateIngredient(mealKey: string, ingredientKey: string, ingredient: Partial<MealIngredient>): Promise<void> {
-    return update(ref(this.database, this.ingredientPath(mealKey, ingredientKey)), ingredient);
+    return this.ingredients(mealKey).update(ingredientKey, ingredient);
   }
 
-  private ingredientsRootPath(mealKey: string): string {
-    return `${this.path(mealKey)}/ingredients`;
-  }
-
-  private ingredientPath(mealKey: string, ingredientKey: string): string {
-    return `${this.ingredientsRootPath(mealKey)}/${ingredientKey}`;
+  private ingredients(mealKey: string): Collection<MealIngredient> {
+    return new Collection(this.database, `${this.childPath(mealKey)}/ingredients`, mealIngredientSchema);
   }
 }

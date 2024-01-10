@@ -1,40 +1,27 @@
-import { inject, Injectable } from '@angular/core';
-import { firstValueFrom, map, Observable } from 'rxjs';
-import { Database, object, push, ref, remove, update } from '@angular/fire/database';
-import { Plan } from '../models/plan.model';
+import { Injectable } from '@angular/core';
+import { Plan, PlannedMeal } from '../models/plan.model';
+import { Node } from '../utilities/node';
+import { plannedMealSchema, planSchema } from '../schemas/plan.schema';
+import { Collection } from '../utilities/collection';
+import { Database } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlanService {
-  readonly rootPath = 'plan';
-  readonly database = inject(Database);
-
-  get$(): Observable<Plan> {
-    return object(ref(this.database, this.rootPath)).pipe(map((queryChange) => queryChange.snapshot.val()));
+export class PlanService extends Node<Plan> {
+  constructor(database: Database) {
+    super(database, 'plan', planSchema, () => ({ meals: {} }));
   }
 
-  get(): Promise<Plan> {
-    return firstValueFrom(this.get$());
+  async removeMeal(key: string): Promise<void> {
+    return this.meals.remove(key);
   }
 
-  async update(plan: Partial<Plan>): Promise<void> {
-    return update(ref(this.database, this.rootPath), plan);
+  async addMeal(meal: PlannedMeal): Promise<string | null> {
+    return this.meals.add(meal);
   }
 
-  async removePlannedMeal(mealKey: string): Promise<void> {
-    return remove(ref(this.database, this.mealPath(mealKey)));
-  }
-
-  async addPlannedMeal(mealKey: string): Promise<void> {
-    return push(ref(this.database, this.mealsPath()), mealKey).then();
-  }
-
-  mealsPath(): string {
-    return `${this.rootPath}/meals`;
-  }
-
-  mealPath(key: string): string {
-    return `${this.mealsPath()}/${key}`;
+  private get meals(): Collection<PlannedMeal> {
+    return new Collection(this.database, `${this.path}/meals`, plannedMealSchema);
   }
 }

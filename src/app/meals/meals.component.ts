@@ -41,16 +41,13 @@ export class MealsComponent implements OnInit {
     this.mealsService.add({
       name: '',
       description: '',
-      price: 'AVERAGE',
-      ratings: {},
       ingredients: {},
-      servings: 3,
-      cooks: []
+      servings: 3
     });
   }
 
   deleteMeal(key: string): void {
-    this.mealsService.delete(key);
+    this.mealsService.remove(key);
   }
 
   navigateToMeal(key: string): void {

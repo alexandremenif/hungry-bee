@@ -1,6 +1,6 @@
-export type Plan = {
-  name: string;
-  meals: Record<string, PlannedMeal>;
-};
+import { z } from 'zod';
+import { plannedMealSchema, planSchema } from '../schemas/plan.schema';
 
-export type PlannedMeal = string;
+export type Plan = z.infer<typeof planSchema>;
+
+export type PlannedMeal = z.infer<typeof plannedMealSchema>;

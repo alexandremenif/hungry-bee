@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [PlanComponent, MealSelectionDialogComponent],
@@ -22,7 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatCardModule,
     MatIconModule,
     MatSelectModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class PlanModule {}
