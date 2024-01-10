@@ -1,5 +1,6 @@
-export type ShoppingList = {
-  [category: string]: { [key: string]: ShoppingListItem };
-};
+import { z } from 'zod';
+import { shoppingListItemSchema, shoppingListSchema } from '../schemas/shopping-list.schema';
 
-export type ShoppingListItem = { text: string; checked: boolean };
+export type ShoppingList = z.infer<typeof shoppingListSchema>;
+
+export type ShoppingListItem = z.infer<typeof shoppingListItemSchema>;

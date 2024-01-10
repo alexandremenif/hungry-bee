@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
 import { MealService } from '../../core/services/meal.service';
-import { Meal } from '../../core/models/meal.model';
+import { PlannedMeal } from '../../core/models/plan.model';
 
 @Component({
   selector: 'app-meal-selection-dialog',
@@ -9,13 +8,12 @@ import { Meal } from '../../core/models/meal.model';
   styleUrls: ['./meal-selection-dialog.component.scss']
 })
 export class MealSelectionDialogComponent {
-  readonly dialogRef = inject(MatDialogRef);
   readonly mealService = inject(MealService);
 
-  meals$ = this.mealService.getAll$();
-  selection?: { key: string; value: Meal };
+  readonly servingsValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  add() {
-    this.dialogRef.close(this.selection?.key);
-  }
+  meals$ = this.mealService.getAll$();
+  model: Partial<PlannedMeal> = {
+    servings: 3
+  };
 }

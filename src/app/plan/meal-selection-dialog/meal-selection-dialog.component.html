@@ -1,12 +1,24 @@
-@if (meals$ | async; as meals) {
-  <mat-form-field>
-    <mat-label>Select a meal</mat-label>
-    <mat-select [(value)]="selection">
-      @for (meal of meals | keyvalue; track meal) {
-        <mat-option [value]="meal">{{ meal.value.name }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-}
-
-<button mat-raised-button color="primary" (click)="add()">Add</button>
+<mat-dialog-content class="mat-typography">
+  <form #form="ngForm">
+    <mat-form-field>
+      <mat-label>Select a meal</mat-label>
+      <mat-select name="meal" [(ngModel)]="model.meal" required>
+        @for (meal of (meals$ | async) ?? {} | keyvalue; track meal) {
+          <mat-option [value]="meal.key">{{ meal.value.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Servings</mat-label>
+      <mat-select name="servings" [(ngModel)]="model.servings" required>
+        @for (servingsValue of servingsValues; track servingsValue) {
+          <mat-option [value]="servingsValue">{{ servingsValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="undefined">Cancel</button>
+  <button mat-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="model">Ok</button>
+</mat-dialog-actions>

@@ -1,3 +1,4 @@
-import { CategoryKey } from './category.model';
+import { z } from 'zod';
+import { ingredientSchema } from '../schemas/ingredient.schema';
 
-export type Ingredient = { name: string; category: CategoryKey };
+export type Ingredient = z.infer<typeof ingredientSchema>;

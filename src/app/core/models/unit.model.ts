@@ -1,12 +1,15 @@
+import { z } from 'zod';
+import { unitKeySchema } from '../schemas/unit.schema';
+
 export type Unit = { name: string; formatter: (quantity: number) => string };
 
-export const units = {
+export type UnitKey = z.infer<typeof unitKeySchema>;
+
+export const units: Record<UnitKey, Unit> = {
   GRAM: { name: 'Gram', formatter: formatGram },
   LITER: { name: 'Liter', formatter: formatLiter },
   PIECE: { name: 'Piece', formatter: formatPiece }
 };
-
-export type UnitKey = keyof typeof units;
 
 function formatLiter(quantity: number): string {
   if (quantity >= 1) {

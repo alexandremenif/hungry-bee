@@ -1,20 +1,13 @@
-import { Price } from './price.model';
-import { Rating } from './rating.model';
-import { UnitKey } from './unit.model';
+import { z } from 'zod';
+import { mealIngredientSchema, mealSchema } from '../schemas/meal.schema';
 
-export type Meal = {
-  name: string;
-  description: string;
-  price: Price;
-  ratings: { [key: string]: Rating };
-  ingredients: { [key: string]: MealIngredient };
-  servings: number;
-  cooks: string[];
-};
+export type Meal = z.infer<typeof mealSchema>;
 
-export type MealIngredient = {
-  ingredient: string;
-  quantity: number;
-  unit: UnitKey;
-  scaleServings: boolean;
+export type MealIngredient = z.infer<typeof mealIngredientSchema>;
+
+export const emptyMeal: Meal = {
+  name: '',
+  description: '',
+  ingredients: {},
+  servings: 3
 };

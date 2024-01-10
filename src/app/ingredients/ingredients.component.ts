@@ -35,6 +35,6 @@ export class IngredientsComponent {
   }
 
   deleteIngredient(key: string) {
-    this.ingredientService.delete(key).then();
+    this.ingredientService.remove(key).then();
   }
 }
