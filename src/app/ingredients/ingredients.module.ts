@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
+import { CategoryNamePipe } from '../core/pipes/category-name.pipe';
 
 @NgModule({
   declarations: [IngredientsComponent, IngredientDialogComponent],
@@ -27,7 +28,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatIconModule,
     MatMenuModule,
     MatDialogModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CategoryNamePipe
   ]
 })
 export class IngredientsModule {}

@@ -2,7 +2,7 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Ingredient</mat-label>
-      <mat-select name="key" [(ngModel)]="model.ingredient" [required]="true">
+      <mat-select name="key" [(ngModel)]="model.ingredientKey" [required]="true">
         @for (ingredient of (ingredients$ | async) ?? {} | keyvalue; track ingredient) {
           <mat-option [value]="ingredient.key">
             {{ ingredient.value.name }}
@@ -19,13 +19,13 @@
     <mat-form-field>
       <mat-label>Unit</mat-label>
       <mat-select name="unit" [(ngModel)]="model.unit" [required]="true">
-        @for (unit of units | keyvalue; track unit) {
-          <mat-option [value]="unit.key">{{ unit.value.name }}</mat-option>
+        @for (unit of units; track unit) {
+          <mat-option [value]="unit">{{ unit | unitName }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
 
-    <mat-slide-toggle name="scaleServings" [(ngModel)]="model.scaleServings"> Scale servings </mat-slide-toggle>
+    <mat-slide-toggle name="scaleServings" [(ngModel)]="model.scaleServings">Scale servings</mat-slide-toggle>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

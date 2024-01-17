@@ -6,7 +6,7 @@
           <div class="ingredient-line">
             <div>
               <span matListItemTitle>{{ ingredient.value.name }}</span>
-              <span matListItemLine>{{ categories[ingredient.value.category].name }}</span>
+              <span matListItemLine>{{ ingredient.value.category | categoryName }}</span>
             </div>
             <button mat-icon-button [matMenuTriggerFor]="menu">
               <mat-icon>more_vert</mat-icon>

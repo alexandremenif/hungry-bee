@@ -1,16 +1,16 @@
 import { z } from 'zod';
-import { unitKeySchema } from './unit.schema';
+import { unitSchema } from './unit.schema';
 
 export const mealIngredientSchema = z.object({
-  ingredient: z.string(),
+  ingredientKey: z.string(),
   quantity: z.number(),
-  unit: unitKeySchema,
+  unit: unitSchema,
   scaleServings: z.boolean()
 });
 
 export const mealSchema = z.object({
   name: z.string(),
   description: z.string(),
-  ingredients: z.record(mealIngredientSchema).optional(),
+  ingredients: z.preprocess((obj) => obj ?? {}, z.record(mealIngredientSchema)),
   servings: z.number()
 });

@@ -1,16 +1,25 @@
 import { z } from 'zod';
-import { categoryKeySchema } from '../schemas/category.schema';
+import { categorySchema } from '../schemas/category.schema';
 
-export type Category = { name: string; order: number };
+export type Category = z.infer<typeof categorySchema>;
 
-export type CategoryKey = z.infer<typeof categoryKeySchema>;
+export const categories: Category[] = ['MEAT', 'FISH', 'FRUIT', 'VEGETABLE', 'DAIRY', 'GROCERY', 'OTHER'];
 
-export const categories: Record<CategoryKey, Category> = {
-  MEAT: { name: 'Meat', order: 0 },
-  FISH: { name: 'Fish', order: 1 },
-  FRUIT: { name: 'Fruit', order: 2 },
-  VEGETABLE: { name: 'Vegetable', order: 3 },
-  DAIRY: { name: 'Dairy', order: 4 },
-  GROCERY: { name: 'Grocery', order: 5 },
-  OTHER: { name: 'Other', order: 6 }
-};
+export function getCategoryName(category: Category): string {
+  switch (category) {
+    case 'MEAT':
+      return 'Meat';
+    case 'FISH':
+      return 'Fish';
+    case 'FRUIT':
+      return 'Fruit';
+    case 'VEGETABLE':
+      return 'Vegetable';
+    case 'DAIRY':
+      return 'Dairy';
+    case 'GROCERY':
+      return 'Grocery';
+    case 'OTHER':
+      return 'Other';
+  }
+}

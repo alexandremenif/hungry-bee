@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const categoryKeySchema = z.union([
+export const categorySchema = z.union([
   z.literal('MEAT'),
   z.literal('FISH'),
   z.literal('FRUIT'),

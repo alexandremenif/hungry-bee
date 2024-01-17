@@ -2,19 +2,19 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Category</mat-label>
-      <mat-select name="categoryKey" [required]="true" [(ngModel)]="data.categoryKey">
+      <mat-select name="category" [required]="true" [(ngModel)]="model.category">
         @for (category of categories; track category) {
-          <mat-option [value]="category.key">{{ category.name }}</mat-option>
+          <mat-option [value]="category">{{ category | categoryName }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Text</mat-label>
-      <input matInput name="text" required [(ngModel)]="data.text" />
+      <mat-label>Entry</mat-label>
+      <input matInput name="entry" required [(ngModel)]="model.entry" />
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="undefined">Cancel</button>
-  <button mat-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+  <button mat-button color="primary" [disabled]="!form.valid" [mat-dialog-close]="model" cdkFocusInitial>Ok</button>
 </mat-dialog-actions>

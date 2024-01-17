@@ -1,46 +1,52 @@
 @if (shoppingList$ | async; as shoppingList) {
   <mat-list>
-    @for (category of categories; track category) {
-      @if (shoppingList[category.key]) {
-        <h3 mat-subheader>{{ category.name }}</h3>
-        @for (entry of shoppingList[category.key] | keyvalue; track entry) {
-          <mat-list-item>
-            <div class="list-item-content">
-              <mat-checkbox
-                [checked]="entry.value.checked"
-                [class.checked-item]="entry.value.checked"
-                (change)="setChecked(category.key, entry.key, $event.checked)"
+    @for (shoppingListCategory of shoppingList; track shoppingListCategory) {
+      <h3 mat-subheader>{{ shoppingListCategory.category | categoryName }}</h3>
+      @for (item of shoppingListCategory.items; track item) {
+        <mat-list-item>
+          <div class="list-item-content">
+            <mat-checkbox
+              [checked]="item.done"
+              [class.checked-item]="item.done"
+              (change)="setDone(item.key, $event.checked)"
+            >
+              <div [class.strikethrough]="item.done">{{ item.entry }}</div>
+            </mat-checkbox>
+            <div>
+              <button
+                mat-icon-button
+                color="primary"
+                aria-label="Edit item"
+                (click)="
+                  openShoppingListItemEditionDialog({
+                    key: item.key,
+                    value: {
+                      category: shoppingListCategory.category,
+                      entry: item.entry,
+                      done: item.done
+                    }
+                  })
+                "
               >
-                <div [class.strikethrough]="entry.value.checked">
-                  {{ entry.value.text }}
-                </div>
-              </mat-checkbox>
-              <div>
-                <button
-                  mat-icon-button
-                  color="primary"
-                  aria-label="Edit item"
-                  (click)="editItem(category.key, entry.key, entry.value)"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  color="primary"
-                  aria-label="Delete item"
-                  (click)="deleteItem(category.key, entry.key)"
-                >
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" aria-label="Delete item" (click)="deleteItem(item.key)">
+                <mat-icon>delete</mat-icon>
+              </button>
             </div>
-          </mat-list-item>
-        }
+          </div>
+        </mat-list-item>
       }
     }
   </mat-list>
 }
 
-<button mat-fab class="add-item-button" (click)="addItem()" color="primary" aria-label="Add an item">
+<button
+  mat-fab
+  class="add-item-button"
+  (click)="openShoppingListItemEditionDialog()"
+  color="primary"
+  aria-label="Add an item"
+>
   <mat-icon>add</mat-icon>
 </button>

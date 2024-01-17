@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Unit, UnitKey, units } from '../../../core/models/unit.model';
+import { Unit, units } from '../../../core/models/unit.model';
 import { IngredientService } from '../../../core/services/ingredient.service';
 import { MealIngredient } from '../../../core/models/meal.model';
 
@@ -14,10 +14,10 @@ export class IngredientDialogComponent {
   readonly ingredientService = inject(IngredientService);
 
   readonly ingredients$ = this.ingredientService.getAll$();
-  readonly units: Record<UnitKey, Unit> = units;
+  readonly units: Unit[] = units;
 
   model: Partial<MealIngredient> = {
-    ingredient: this.data?.ingredient,
+    ingredientKey: this.data?.ingredientKey,
     quantity: this.data?.quantity ?? 1,
     unit: this.data?.unit ?? 'PIECE',
     scaleServings: this.data?.scaleServings ?? true

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { MealIngredient } from '../../core/models/meal.model';
-import { units } from '../../core/models/unit.model';
+import { formatUnit } from '../../core/models/unit.model';
 
 @Pipe({
   name: 'ingredientQuantity',
@@ -8,7 +8,7 @@ import { units } from '../../core/models/unit.model';
 })
 export class IngredientQuantityPipe implements PipeTransform {
   transform(ingredient: MealIngredient): string {
-    const formattedQuantity = units[ingredient.unit].formatter(ingredient.quantity);
+    const formattedQuantity = formatUnit(ingredient.quantity, ingredient.unit);
     return ingredient.scaleServings ? formattedQuantity : `${formattedQuantity} (fixed)`;
   }
 }

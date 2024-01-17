@@ -1,15 +1,31 @@
 import { z } from 'zod';
-import { unitKeySchema } from '../schemas/unit.schema';
+import { unitSchema } from '../schemas/unit.schema';
 
-export type Unit = { name: string; formatter: (quantity: number) => string };
+export type Unit = z.infer<typeof unitSchema>;
 
-export type UnitKey = z.infer<typeof unitKeySchema>;
+export const units: Unit[] = ['GRAM', 'LITER', 'PIECE'];
 
-export const units: Record<UnitKey, Unit> = {
-  GRAM: { name: 'Gram', formatter: formatGram },
-  LITER: { name: 'Liter', formatter: formatLiter },
-  PIECE: { name: 'Piece', formatter: formatPiece }
-};
+export function getUnitName(unit: Unit): string {
+  switch (unit) {
+    case 'GRAM':
+      return 'Gram';
+    case 'LITER':
+      return 'Liter';
+    case 'PIECE':
+      return 'Piece';
+  }
+}
+
+export function formatUnit(quantity: number, unit: Unit): string {
+  switch (unit) {
+    case 'GRAM':
+      return formatGram(quantity);
+    case 'LITER':
+      return formatLiter(quantity);
+    case 'PIECE':
+      return formatPiece(quantity);
+  }
+}
 
 function formatLiter(quantity: number): string {
   if (quantity >= 1) {

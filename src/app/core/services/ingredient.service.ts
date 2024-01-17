@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Ingredient } from '../models/ingredient.model';
 import { Database, get, ref, update } from '@angular/fire/database';
 import { Meal } from '../models/meal.model';
-import { Collection } from '../utilities/collection';
+import { Collection } from './collection';
 import { ingredientSchema } from '../schemas/ingredient.schema';
 
 @Injectable({
@@ -17,8 +17,8 @@ export class IngredientService extends Collection<Ingredient> {
     // Delete the ingredient as well as all references to it in all meals in one transaction.
     const meals = (await get(ref(this.database, 'meals'))).val() as Record<string, Meal>;
     const mealIngredientPaths = Object.entries(meals).flatMap(([mealKey, meal]) =>
-      Object.entries(meal.ingredients ?? {})
-        .filter((entry) => key === entry[1].ingredient)
+      Object.entries(meal.ingredients)
+        .filter((entry) => key === entry[1].ingredientKey)
         .map((entry) => `meals/${mealKey}/ingredients/${entry[0]}`)
     );
     const paths = [...mealIngredientPaths, `ingredients/${key}`];

@@ -2,7 +2,7 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Select a meal</mat-label>
-      <mat-select name="meal" [(ngModel)]="model.meal" required>
+      <mat-select name="meal" [(ngModel)]="model.mealKey" required>
         @for (meal of (meals$ | async) ?? {} | keyvalue; track meal) {
           <mat-option [value]="meal.key">{{ meal.value.name }}</mat-option>
         }

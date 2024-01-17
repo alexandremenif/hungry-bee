@@ -3,21 +3,22 @@ import { Meal, MealIngredient } from '../models/meal.model';
 import { Database, get, ref, update } from '@angular/fire/database';
 import { Plan } from '../models/plan.model';
 import { mealIngredientSchema, mealSchema } from '../schemas/meal.schema';
-import { Collection } from '../utilities/collection';
+import { Collection } from './collection';
+import { Schema } from 'zod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MealService extends Collection<Meal> {
   constructor(database: Database) {
-    super(database, 'meals', mealSchema);
+    super(database, 'meals', mealSchema as Schema<Meal>);
   }
 
   override async remove(mealKey: string): Promise<void> {
     // Delete the meal as well as all references to it in the plan in one transaction.
     const meals = (await get(ref(this.database, 'plan/meals'))).val() as Plan['meals'];
-    const keys = Object.entries(meals ?? {})
-      .filter((entry) => mealKey === entry[1].meal)
+    const keys = Object.entries(meals)
+      .filter((entry) => mealKey === entry[1].mealKey)
       .map((entry) => entry[0]);
     const paths = [...keys.map((key) => `plan/meals/${key}`), `meals/${mealKey}`];
     return await update(ref(this.database), Object.fromEntries(paths.map((path) => [path, null])));
@@ -36,6 +37,6 @@ export class MealService extends Collection<Meal> {
   }
 
   private ingredients(mealKey: string): Collection<MealIngredient> {
-    return new Collection(this.database, `${this.childPath(mealKey)}/ingredients`, mealIngredientSchema);
+    return new Collection(this.database, `meals/${mealKey}/ingredients`, mealIngredientSchema);
   }
 }

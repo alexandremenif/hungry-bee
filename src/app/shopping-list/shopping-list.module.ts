@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { CategoryNamePipe } from '../core/pipes/category-name.pipe';
 
 @NgModule({
   declarations: [ShoppingListComponent, ShoppingListItemEditionDialogComponent],
@@ -25,7 +26,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatDialogModule,
     MatInputModule,
     MatSelectModule,
-    ShoppingListRoutingModule
+    ShoppingListRoutingModule,
+    CategoryNamePipe
   ]
 })
 export class ShoppingListModule {}

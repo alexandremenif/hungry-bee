@@ -1,10 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { categories, Category } from '../core/models/category.model';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ShoppingListItemEditionDialogComponent } from './shopping-list-item-edition-dialog/shopping-list-item-edition-dialog.component';
-import { ShoppingList, ShoppingListItem } from '../core/models/shopping-list.model';
 import { ShoppingListService } from '../core/services/shopping-list.service';
+import { ShoppingList } from './shopping-list.model';
+import { map } from 'rxjs/operators';
+import { ShoppingListItem } from '../core/models/shopping-list.model';
 
 @Component({
   selector: 'app-shopping-list',
@@ -15,54 +17,47 @@ export class ShoppingListComponent {
   readonly dialog = inject(MatDialog);
   readonly shoppingListService = inject(ShoppingListService);
 
-  readonly categories: (Category & { key: string })[] = Object.entries(categories)
-    .map(([key, value]) => ({ key, ...value }))
-    .sort((a, b) => a.order - b.order);
+  readonly categories: Category[] = categories;
 
-  shoppingList$: Observable<ShoppingList> = this.shoppingListService.get$();
+  shoppingList$: Observable<ShoppingList> = this.shoppingListService.getAll$().pipe(
+    map((allItems) => {
+      return categories
+        .map((category) => {
+          const items = Object.entries(allItems)
+            .filter((entry) => entry[1].category === category)
+            .map(([key, { entry, done }]) => ({ key, entry, done }));
+          return {
+            category,
+            items: items
+          };
+        })
+        .filter((category) => category.items.length > 0);
+    })
+  );
 
-  deleteItem(categoryKey: string, itemKey: string): Promise<void> {
-    return this.shoppingListService.removeItem(categoryKey, itemKey);
+  deleteItem(itemKey: string): Promise<void> {
+    return this.shoppingListService.remove(itemKey);
   }
 
-  editItem(categoryKey: string, itemKey: string, item: ShoppingListItem) {
-    const dialogRef = this.dialog.open(ShoppingListItemEditionDialogComponent, {
-      data: { text: item.text, categoryKey }
-    });
+  openShoppingListItemEditionDialog(item?: { key: string; value: ShoppingListItem }) {
+    const dialogRef: MatDialogRef<ShoppingListItemEditionDialogComponent, ShoppingListItem> = this.dialog.open(
+      ShoppingListItemEditionDialogComponent,
+      {
+        data: item?.value
+      }
+    );
     dialogRef.afterClosed().subscribe(async (data) => {
       if (data !== undefined) {
-        if (data.categoryKey !== categoryKey) {
-          await this.shoppingListService.removeItem(categoryKey, itemKey);
-          return this.shoppingListService.addItem(data.categoryKey, {
-            text: data.text,
-            checked: item.checked
-          });
+        if (item?.key) {
+          return this.shoppingListService.update(item.key, data);
         } else {
-          return this.shoppingListService.updateItem(categoryKey, itemKey, {
-            text: data.text
-          });
+          return this.shoppingListService.add(data);
         }
       }
     });
   }
 
-  addItem() {
-    const dialogRef = this.dialog.open(ShoppingListItemEditionDialogComponent, {
-      data: {}
-    });
-    dialogRef.afterClosed().subscribe(async (data) => {
-      if (data !== undefined) {
-        this.shoppingListService.addItem(data.categoryKey, {
-          text: data.text,
-          checked: false
-        });
-      }
-    });
-  }
-
-  setChecked(categoryKey: string, itemKey: string, checked: boolean): Promise<void> {
-    return this.shoppingListService.updateItem(categoryKey, itemKey, {
-      checked
-    });
+  setDone(itemKey: string, done: boolean): Promise<void> {
+    return this.shoppingListService.update(itemKey, { done });
   }
 }

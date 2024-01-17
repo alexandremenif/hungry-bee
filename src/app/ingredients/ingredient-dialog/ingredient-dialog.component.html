@@ -8,8 +8,8 @@
     <mat-form-field>
       <mat-label>Category</mat-label>
       <mat-select name="category" [(ngModel)]="model.category">
-        @for (category of categories | keyvalue; track category.key) {
-          <mat-option [value]="category.key">{{ category.value.name }}</mat-option>
+        @for (category of categories; track category) {
+          <mat-option [value]="category">{{ category | categoryName }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

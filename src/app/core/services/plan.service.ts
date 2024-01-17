@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Plan, PlannedMeal } from '../models/plan.model';
-import { Node } from '../utilities/node';
+import { Node } from './node';
 import { plannedMealSchema, planSchema } from '../schemas/plan.schema';
-import { Collection } from '../utilities/collection';
+import { Collection } from './collection';
 import { Database } from '@angular/fire/database';
+import { Schema } from 'zod';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlanService extends Node<Plan> {
   constructor(database: Database) {
-    super(database, 'plan', planSchema, () => ({ meals: {} }));
+    super(database, 'plan', planSchema as Schema<Plan>, () => ({ meals: {} }));
   }
 
   async removeMeal(key: string): Promise<void> {

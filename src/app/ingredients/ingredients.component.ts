@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { categories } from '../core/models/category.model';
 import { IngredientService } from '../core/services/ingredient.service';
 import { KeyValue } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Ingredient } from '../core/models/ingredient.model';
 import { IngredientDialogComponent } from './ingredient-dialog/ingredient-dialog.component';
+import { categories } from '../core/models/category.model';
 
 @Component({
   selector: 'app-ingredients',
