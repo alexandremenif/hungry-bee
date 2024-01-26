@@ -18,6 +18,7 @@ import { IngredientDialogComponent } from './meal/ingredient-dialog/ingredient-d
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UnitNamePipe } from '../core/pipes/unit-name.pipe';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [MealsComponent, MealComponent, IngredientQuantityPipe, IngredientDialogComponent],
@@ -35,7 +36,8 @@ import { UnitNamePipe } from '../core/pipes/unit-name.pipe';
     MatListModule,
     MatMenuModule,
     MatSlideToggleModule,
-    UnitNamePipe
+    UnitNamePipe,
+    MatAutocompleteModule
   ]
 })
 export class MealsModule {}

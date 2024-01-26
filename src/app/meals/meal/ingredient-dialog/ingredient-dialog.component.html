@@ -2,13 +2,24 @@
   <form #form="ngForm">
     <mat-form-field>
       <mat-label>Ingredient</mat-label>
-      <mat-select name="key" [(ngModel)]="model.ingredientKey" [required]="true">
-        @for (ingredient of (ingredients$ | async) ?? {} | keyvalue; track ingredient) {
+      <input
+        #filter
+        type="text"
+        matInput
+        name="key"
+        [(ngModel)]="model.ingredientKey"
+        [required]="true"
+        [matAutocomplete]="auto"
+        (input)="applyFilter(filter.value)"
+        (focus)="applyFilter(filter.value)"
+      />
+      <mat-autocomplete #auto="matAutocomplete" requireSelection="true" [displayWith]="displayFn$ | async">
+        @for (ingredient of ingredients$ | async; track ingredient) {
           <mat-option [value]="ingredient.key">
-            {{ ingredient.value.name }}
+            {{ ingredient.name }}
           </mat-option>
         }
-      </mat-select>
+      </mat-autocomplete>
     </mat-form-field>
 
     <mat-form-field>
