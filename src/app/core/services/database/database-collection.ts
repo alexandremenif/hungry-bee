@@ -1,4 +1,3 @@
-import { map, Observable } from 'rxjs';
 import {
   Database,
   DatabaseReference,
@@ -11,8 +10,9 @@ import {
   update
 } from '@angular/fire/database';
 import { Schema, z } from 'zod';
+import { map, Observable } from 'rxjs';
 
-export class Collection<T> {
+export class DatabaseCollection<T> {
   private ref = ref(this.database, this.path);
 
   constructor(

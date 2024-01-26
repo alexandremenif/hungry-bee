@@ -1,6 +1,7 @@
-import { z } from 'zod';
+import { Schema, z } from 'zod';
+import { Category } from '../../models/category.model';
 
-export const categorySchema = z.union([
+export const categorySchema: Schema<Category> = z.union([
   z.literal('MEAT'),
   z.literal('FISH'),
   z.literal('FRUIT'),

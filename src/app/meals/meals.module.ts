@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { SharedModule } from '../shared/shared.module';
 import { MatCardModule } from '@angular/material/card';
 import { MealComponent } from './meal/meal.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,7 +30,6 @@ import { UnitNamePipe } from '../core/pipes/unit-name.pipe';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
-    SharedModule,
     MatCardModule,
     MatSelectModule,
     MatListModule,

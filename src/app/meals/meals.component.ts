@@ -1,37 +1,28 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MealService } from '../core/services/meal.service';
 import { map } from 'rxjs/operators';
-import { filter } from '../shared/utilities/filter';
-import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
-import { Meal } from '../core/models/meal.model';
 
 @Component({
   selector: 'app-meals',
   templateUrl: './meals.component.html',
   styleUrls: ['./meals.component.scss']
 })
-export class MealsComponent implements OnInit {
+export class MealsComponent {
   readonly mealsService = inject(MealService);
   readonly router = inject(Router);
 
-  filteredMeals$: Observable<Record<string, Meal>> = this.mealsService.getAll$();
-  filterText = '';
+  meals = this.mealsService.getMealList$();
 
-  ngOnInit(): void {
-    this.filteredMeals$ = this.mealsService.getAll$();
-  }
-
-  applyFilter(): void {
-    this.filteredMeals$ = this.mealsService
-      .getAll$()
+  applyFilter(filter: string): void {
+    this.meals = this.mealsService
+      .getMealList$()
       .pipe(
         map((meals) =>
-          filter(
-            meals,
+          meals.filter(
             (meal) =>
-              meal.name.toLowerCase().includes(this.filterText.toLowerCase()) ||
-              meal.description.toLowerCase().includes(this.filterText.toLowerCase())
+              meal.name.toLowerCase().includes(filter.toLowerCase()) ||
+              meal.description.toLowerCase().includes(filter.toLowerCase())
           )
         )
       );

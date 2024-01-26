@@ -1,12 +1,18 @@
+<mat-form-field>
+  <mat-label>Search Ingredients</mat-label>
+  <input matInput #filter (keyup)="applyFilter(filter.value)" />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
 <mat-card>
   <mat-card-content>
     <mat-list>
-      @for (ingredient of (ingredients$ | async) ?? {} | keyvalue; track ingredient.key; let last = $last) {
+      @for (ingredient of ingredients$ | async; track ingredient.key; let last = $last) {
         <mat-list-item>
           <div class="ingredient-line">
             <div>
-              <span matListItemTitle>{{ ingredient.value.name }}</span>
-              <span matListItemLine>{{ ingredient.value.category | categoryName }}</span>
+              <span matListItemTitle>{{ ingredient.name }}</span>
+              <span matListItemLine>{{ ingredient.category | categoryName }}</span>
             </div>
             <button mat-icon-button [matMenuTriggerFor]="menu">
               <mat-icon>more_vert</mat-icon>

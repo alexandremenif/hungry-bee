@@ -1,28 +1,43 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Plan, PlannedMeal } from '../models/plan.model';
-import { Node } from './node';
-import { plannedMealSchema, planSchema } from '../schemas/plan.schema';
-import { Collection } from './collection';
+import { combineLatest, Observable, switchMap } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Meal } from '../models/meal.model';
+import { DatabaseCollection } from './database/database-collection';
+import { MealService } from './meal.service';
 import { Database } from '@angular/fire/database';
-import { Schema } from 'zod';
+import { plannedMealSchema } from './database/plan.schema';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlanService extends Node<Plan> {
+export class PlanService extends DatabaseCollection<PlannedMeal> {
+  private readonly mealService = inject(MealService);
+
   constructor(database: Database) {
-    super(database, 'plan', planSchema as Schema<Plan>, () => ({ meals: {} }));
+    super(database, 'plan', plannedMealSchema);
   }
 
-  async removeMeal(key: string): Promise<void> {
-    return this.meals.remove(key);
-  }
-
-  async addMeal(meal: PlannedMeal): Promise<string | null> {
-    return this.meals.add(meal);
-  }
-
-  private get meals(): Collection<PlannedMeal> {
-    return new Collection(this.database, `${this.path}/meals`, plannedMealSchema);
+  getPlan$(): Observable<Plan> {
+    return this.getAll$().pipe(
+      switchMap((plannedMeals) =>
+        combineLatest(
+          Object.values(plannedMeals).map((plannedMeal) =>
+            this.mealService
+              .get$(plannedMeal.mealKey)
+              .pipe(map((meal) => [plannedMeal.mealKey, meal] as [string, Meal | undefined]))
+          )
+        ).pipe(
+          map((meals) => {
+            const mealRecord = Object.fromEntries(meals);
+            return Object.entries(plannedMeals).map(([key, plannedMeal]) => ({
+              key,
+              meal: mealRecord[plannedMeal.mealKey]!,
+              servings: plannedMeal.servings
+            }));
+          })
+        )
+      )
+    );
   }
 }

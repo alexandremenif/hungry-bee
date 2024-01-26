@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { SharedModule } from '../shared/shared.module';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +22,6 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatIconModule,
     MatSelectModule,
-    SharedModule,
     FormsModule
   ]
 })

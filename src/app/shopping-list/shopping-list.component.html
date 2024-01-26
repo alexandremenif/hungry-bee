@@ -10,7 +10,7 @@
               [class.checked-item]="item.done"
               (change)="setDone(item.key, $event.checked)"
             >
-              <div [class.strikethrough]="item.done">{{ item.entry }}</div>
+              <div [class.strikethrough]="item.done">{{ item.content }}</div>
             </mat-checkbox>
             <div>
               <button
@@ -20,11 +20,9 @@
                 (click)="
                   openShoppingListItemEditionDialog({
                     key: item.key,
-                    value: {
-                      category: shoppingListCategory.category,
-                      entry: item.entry,
-                      done: item.done
-                    }
+                    content: item.content,
+                    done: item.done,
+                    category: shoppingListCategory.category
                   })
                 "
               >

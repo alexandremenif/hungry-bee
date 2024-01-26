@@ -1,15 +1,15 @@
 <mat-form-field>
   <mat-label>Search Meals</mat-label>
-  <input matInput [(ngModel)]="filterText" (keyup)="applyFilter()" />
+  <input matInput #filter (keyup)="applyFilter(filter.value)" />
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 
-@if (filteredMeals$ | async; as meals) {
-  @for (meal of meals | keyvalue; track meal) {
+@if (meals | async; as meals) {
+  @for (meal of meals; track meal) {
     <mat-card class="meal">
       <mat-card-header>
-        <mat-card-title>{{ meal.value.name }}</mat-card-title>
-        <mat-card-subtitle>{{ meal.value.description }}</mat-card-subtitle>
+        <mat-card-title>{{ meal.name }}</mat-card-title>
+        <mat-card-subtitle>{{ meal.description }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-actions>
         <button mat-button color="primary" (click)="deleteMeal(meal.key)">Delete</button>

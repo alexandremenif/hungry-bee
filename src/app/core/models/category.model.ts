@@ -1,7 +1,4 @@
-import { z } from 'zod';
-import { categorySchema } from '../schemas/category.schema';
-
-export type Category = z.infer<typeof categorySchema>;
+export type Category = 'MEAT' | 'FISH' | 'FRUIT' | 'VEGETABLE' | 'DAIRY' | 'GROCERY' | 'OTHER';
 
 export const categories: Category[] = ['MEAT', 'FISH', 'FRUIT', 'VEGETABLE', 'DAIRY', 'GROCERY', 'OTHER'];
 

@@ -1,10 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { IngredientService } from '../core/services/ingredient.service';
-import { KeyValue } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Ingredient } from '../core/models/ingredient.model';
 import { IngredientDialogComponent } from './ingredient-dialog/ingredient-dialog.component';
-import { categories } from '../core/models/category.model';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ingredients',
@@ -14,13 +13,19 @@ import { categories } from '../core/models/category.model';
 export class IngredientsComponent {
   readonly dialog = inject(MatDialog);
   readonly ingredientService = inject(IngredientService);
-  readonly ingredients$ = this.ingredientService.getAll$();
-  readonly categories = categories;
 
-  openIngredientDialog(ingredient?: KeyValue<string, Ingredient>) {
+  ingredients$ = this.ingredientService.getIngredientList$();
+
+  applyFilter(filter: string): void {
+    this.ingredients$ = this.ingredientService
+      .getIngredientList$()
+      .pipe(map((meals) => meals.filter((meal) => meal.name.toLowerCase().includes(filter.toLowerCase()))));
+  }
+
+  openIngredientDialog(ingredient?: { key: string } & Ingredient) {
     this.dialog
       .open<IngredientDialogComponent, Ingredient | undefined, Ingredient>(IngredientDialogComponent, {
-        data: ingredient?.value
+        data: ingredient
       })
       .afterClosed()
       .subscribe((result) => {

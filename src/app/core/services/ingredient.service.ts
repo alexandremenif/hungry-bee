@@ -1,16 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Ingredient } from '../models/ingredient.model';
+import { Ingredient, IngredientList } from '../models/ingredient.model';
 import { Database, get, ref, update } from '@angular/fire/database';
 import { Meal } from '../models/meal.model';
-import { Collection } from './collection';
-import { ingredientSchema } from '../schemas/ingredient.schema';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { DatabaseCollection } from './database/database-collection';
+import { ingredientSchema } from './database/ingredient.schema';
 
 @Injectable({
   providedIn: 'root'
 })
-export class IngredientService extends Collection<Ingredient> {
+export class IngredientService extends DatabaseCollection<Ingredient> {
   constructor(database: Database) {
     super(database, 'ingredients', ingredientSchema);
+  }
+
+  getIngredientList$(): Observable<IngredientList> {
+    return this.getAll$().pipe(
+      map((ingredients) =>
+        Object.entries(ingredients)
+          .map(([key, ingredient]) => ({ key, ...ingredient }))
+          .sort((a, b) => a.name.localeCompare(b.name))
+      )
+    );
   }
 
   override async remove(key: string): Promise<void> {

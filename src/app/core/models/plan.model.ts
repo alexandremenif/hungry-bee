@@ -1,6 +1,3 @@
-import { z } from 'zod';
-import { plannedMealSchema, planSchema } from '../schemas/plan.schema';
+export type Plan = { key: string; meal: { name: string; description: string }; servings: number }[];
 
-export type Plan = z.infer<typeof planSchema>;
-
-export type PlannedMeal = z.infer<typeof plannedMealSchema>;
+export type PlannedMeal = { mealKey: string; servings: number };

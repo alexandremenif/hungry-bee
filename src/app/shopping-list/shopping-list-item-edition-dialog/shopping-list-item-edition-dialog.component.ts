@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { categories } from '../../core/models/category.model';
-import { ShoppingListItem } from '../../core/models/shopping-list.model';
+import { ShoppingListItemEdition } from '../../core/models/shopping-list.model';
 
 @Component({
   selector: 'app-shopping-list-item-edition-dialog',
@@ -9,12 +9,11 @@ import { ShoppingListItem } from '../../core/models/shopping-list.model';
   styleUrls: ['./shopping-list-item-edition-dialog.component.scss']
 })
 export class ShoppingListItemEditionDialogComponent {
-  readonly data?: ShoppingListItem = inject(MAT_DIALOG_DATA);
+  readonly data?: ShoppingListItemEdition = inject(MAT_DIALOG_DATA);
   readonly categories = categories;
 
-  model: Partial<ShoppingListItem> = {
-    entry: this.data?.entry ?? '',
-    category: this.data?.category,
-    done: false
+  model: Partial<ShoppingListItemEdition> = {
+    content: this.data?.content,
+    category: this.data?.category
   };
 }

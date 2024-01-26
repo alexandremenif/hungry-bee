@@ -2,12 +2,10 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MealService } from '../../core/services/meal.service';
 import { map, switchMap } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
-import { IngredientService } from '../../core/services/ingredient.service';
+import { throwError } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { emptyMeal, Meal, MealIngredient } from '../../core/models/meal.model';
+import { MealIngredient, MealWithIngredients } from '../../core/models/meal.model';
 import { IngredientDialogComponent } from './ingredient-dialog/ingredient-dialog.component';
-import { KeyValue } from '@angular/common';
 
 @Component({
   selector: 'app-meal',
@@ -18,22 +16,19 @@ export class MealComponent {
   readonly route = inject(ActivatedRoute);
   readonly dialog = inject(MatDialog);
   readonly mealService = inject(MealService);
-  readonly ingredientService = inject(IngredientService);
 
   readonly servingsValues = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  readonly meal$: Observable<KeyValue<string, Meal>> = this.route.paramMap.pipe(
+  readonly meal$ = this.route.paramMap.pipe(
     map((paramMap) => paramMap.get('key')),
     switchMap((key) => {
       if (key === null) {
         return throwError(() => new Error('No key provided'));
       } else {
-        return this.mealService.get$(key).pipe(map((value) => ({ key, value: value ?? emptyMeal })));
+        return this.mealService.getMealWithIngredients$(key);
       }
     })
   );
-
-  readonly ingredients$ = this.ingredientService.getAll$();
 
   setName(key: string, name: string) {
     this.mealService.update(key, { name });
@@ -47,10 +42,17 @@ export class MealComponent {
     this.mealService.update(key, { servings });
   }
 
-  openIngredientDialog(mealKey: string, ingredient?: KeyValue<string, MealIngredient>) {
+  openIngredientDialog(mealKey: string, ingredient?: MealWithIngredients['ingredients'][number]) {
     this.dialog
-      .open<IngredientDialogComponent, MealIngredient | undefined, MealIngredient>(IngredientDialogComponent, {
-        data: ingredient?.value
+      .open<IngredientDialogComponent, MealIngredient | undefined>(IngredientDialogComponent, {
+        data: ingredient
+          ? {
+              ingredientKey: ingredient.ingredient.key,
+              quantity: ingredient.quantity,
+              scaleServings: ingredient.scaleServings,
+              unit: ingredient.unit
+            }
+          : undefined
       })
       .afterClosed()
       .subscribe((result) => {

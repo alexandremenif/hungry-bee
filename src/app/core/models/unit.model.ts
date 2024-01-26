@@ -1,7 +1,4 @@
-import { z } from 'zod';
-import { unitSchema } from '../schemas/unit.schema';
-
-export type Unit = z.infer<typeof unitSchema>;
+export type Unit = 'GRAM' | 'LITER' | 'PIECE';
 
 export const units: Unit[] = ['GRAM', 'LITER', 'PIECE'];
 

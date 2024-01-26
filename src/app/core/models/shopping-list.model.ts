@@ -1,6 +1,18 @@
-import { z } from 'zod';
-import { shoppingListItemSchema, shoppingListSchema } from '../schemas/shopping-list.schema';
+import { Category } from './category.model';
 
-export type ShoppingList = z.infer<typeof shoppingListSchema>;
+export type ShoppingListItem = {
+  content: string;
+  done: boolean;
+  category: string;
+};
 
-export type ShoppingListItem = z.infer<typeof shoppingListItemSchema>;
+export type ShoppingList = ShoppingListCategory[];
+
+export type ShoppingListCategory = {
+  category: Category;
+  items: ShoppingListCategoryItem[];
+};
+
+export type ShoppingListCategoryItem = { key: string } & Omit<ShoppingListItem, 'category'>;
+
+export type ShoppingListItemEdition = Omit<ShoppingListItem, 'done'>;

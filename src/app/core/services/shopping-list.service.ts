@@ -1,36 +1,56 @@
 import { inject, Injectable } from '@angular/core';
 import { Database, ref, set } from '@angular/fire/database';
-import { ShoppingListItem } from '../models/shopping-list.model';
 import { formatUnit, Unit } from '../models/unit.model';
-import { PlanService } from './plan.service';
-import { MealService } from './meal.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { categories } from '../models/category.model';
+import { ShoppingList, ShoppingListItem } from '../models/shopping-list.model';
+import { DatabaseCollection } from './database/database-collection';
 import { IngredientService } from './ingredient.service';
-import { Collection } from './collection';
-import { shoppingListItemSchema } from '../schemas/shopping-list.schema';
+import { MealService } from './meal.service';
+import { PlanService } from './plan.service';
+import { shoppingListItemSchema } from './database/shopping-list.schema';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ShoppingListService extends Collection<ShoppingListItem> {
-  readonly planService = inject(PlanService);
-  readonly mealService = inject(MealService);
-  readonly ingredientService = inject(IngredientService);
+export class ShoppingListService extends DatabaseCollection<ShoppingListItem> {
+  private readonly planService = inject(PlanService);
+  private readonly mealService = inject(MealService);
+  private readonly ingredientService = inject(IngredientService);
 
   constructor(database: Database) {
     super(database, 'shoppingList', shoppingListItemSchema);
   }
 
-  async createFromPlan(): Promise<void> {
-    const plan = await this.planService.get();
+  getShoppingList$(): Observable<ShoppingList> {
+    return this.getAll$().pipe(
+      map((allItems) =>
+        categories
+          .map((category) => {
+            return {
+              category,
+              items: Object.entries(allItems)
+                .filter((entry) => entry[1].category === category)
+                .map(([key, { content, done }]) => ({ key, content, done }))
+            };
+          })
+          .filter((category) => category.items.length > 0)
+      )
+    );
+  }
+
+  async resetFromPlan(): Promise<void> {
+    const plan = await this.planService.getAll();
     const meals = await this.mealService.getAll();
     const ingredients = await this.ingredientService.getAll();
     const quantitiesByUnitAndIngredient: Map<Unit, Map<string, number>> = new Map();
 
     // Clear the shopping list.
-    await this.clear();
+    await set(ref(this.database, 'shoppingList'), {});
 
     // Aggregate the quantities for each pair of unit and ingredient.
-    for (const plannedMeal of Object.values(plan.meals)) {
+    for (const plannedMeal of Object.values(plan)) {
       const meal = meals[plannedMeal.mealKey];
       const ratio = plannedMeal.servings / meal.servings;
       for (const ingredient of Object.values(meal.ingredients)) {
@@ -58,13 +78,9 @@ export class ShoppingListService extends Collection<ShoppingListItem> {
         const ingredient = ingredients[ingredientKey];
         const category = ingredient.category;
         const name = ingredient.name;
-        const entry = `${name} ${formatUnit(quantity, unit)}`;
-        await this.add({ category, entry, done: false });
+        const content = `${name} ${formatUnit(quantity, unit)}`;
+        await this.add({ category, content, done: false });
       }
     }
-  }
-
-  async clear(): Promise<void> {
-    return set(ref(this.database, this.path), {});
   }
 }

@@ -3,7 +3,7 @@
     <mat-card-content class="properties">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input #name matInput [value]="meal.value.name" (input)="setName(meal.key, name.value)" />
+        <input #name matInput [value]="meal.name" (input)="setName(meal.key, name.value)" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Description</mat-label>
@@ -11,13 +11,13 @@
           #description
           matInput
           rows="5"
-          [value]="meal.value.description"
+          [value]="meal.description"
           (input)="setDescription(meal.key, description.value)"
         ></textarea>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Servings</mat-label>
-        <mat-select #servings [value]="meal.value.servings" (change)="setServings(meal.key, servings.value)">
+        <mat-select #servings [value]="meal.servings" (change)="setServings(meal.key, servings.value)">
           @for (servingsValue of servingsValues; track servingsValue) {
             <mat-option [value]="servingsValue">{{ servingsValue }}</mat-option>
           }
@@ -31,12 +31,12 @@
     </mat-card-header>
     <mat-card-content>
       <mat-list>
-        @for (mealIngredient of meal.value.ingredients | keyvalue; track mealIngredient; let last = $last) {
+        @for (mealIngredient of meal.ingredients; track mealIngredient; let last = $last) {
           <mat-list-item>
             <div class="ingredient-line">
               <div>
-                <span matListItemTitle>{{ (ingredients$ | async)?.[mealIngredient.value.ingredientKey]?.name }}</span>
-                <span matListItemLine>{{ mealIngredient.value | ingredientQuantity }}</span>
+                <span matListItemTitle>{{ mealIngredient.ingredient.name }}</span>
+                <span matListItemLine>{{ mealIngredient | ingredientQuantity }}</span>
               </div>
               <button mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
@@ -54,14 +54,7 @@
       </mat-list>
     </mat-card-content>
     <mat-card-actions>
-      <button
-        mat-button
-        color="primary"
-        [disabled]="((ingredients$ | async) ?? {} | keyvalue).length === 0"
-        (click)="openIngredientDialog(meal.key)"
-      >
-        Add
-      </button>
+      <button mat-button color="primary" (click)="openIngredientDialog(meal.key)">Add</button>
     </mat-card-actions>
   </mat-card>
 }

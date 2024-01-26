@@ -1,13 +1,31 @@
-import { z } from 'zod';
-import { mealIngredientSchema, mealSchema } from '../schemas/meal.schema';
+import { Unit } from './unit.model';
 
-export type Meal = z.infer<typeof mealSchema>;
+export type Meal = {
+  name: string;
+  description: string;
+  ingredients: Record<string, MealIngredient>;
+  servings: number;
+};
 
-export type MealIngredient = z.infer<typeof mealIngredientSchema>;
+export type MealIngredient = {
+  ingredientKey: string;
+  quantity: number;
+  unit: Unit;
+  scaleServings: boolean;
+};
 
-export const emptyMeal: Meal = {
-  name: '',
-  description: '',
-  ingredients: {},
-  servings: 3
+export type MealList = ({ key: string } & Meal)[];
+
+export type MealWithIngredients = {
+  key: string;
+  name: string;
+  description: string;
+  ingredients: {
+    key: string;
+    quantity: number;
+    unit: Unit;
+    scaleServings: boolean;
+    ingredient: { key: string; name: string };
+  }[];
+  servings: number;
 };
